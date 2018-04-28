@@ -39,3 +39,9 @@
 <script>
 export default { name: 'AppFooter' };
 </script>
+
+<style>
+html {
+	background-color: whitesmoke !important;
+}
+</style>

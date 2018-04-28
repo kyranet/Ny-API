@@ -1,3 +1,6 @@
 {
-	"extends": "klasa/vue"
+	"extends": "klasa/vue",
+	"rules": {
+		"new-cap": "off"
+	}
 }
