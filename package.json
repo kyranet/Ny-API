@@ -13,7 +13,7 @@
     "lint:fix": "eslint --ext .js,.vue src --fix",
     "build": "poi build",
     "server": "node ./server/SkyraServer",
-    "server:production": "pm2 start ./server/SkyraServer --name=\"Skyra-Vue\""
+    "server:production": "pm2 start ./server/SkyraServer.js --name=\"Skyra-Vue\""
   },
   "dependencies": {
     "body-parser": "^1.18.2",

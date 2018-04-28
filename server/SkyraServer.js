@@ -82,13 +82,13 @@ class SkyraServer {
 		this.server.get('/api/statistics', (req, res) => {
 			this.requestIPC({ route: 'statistics' }).then(data => res.json(data.response));
 		});
-		this.server.get('/api/users/:user', (request, response) => {
-			response.json({ success: true, data: request.user });
+		this.server.get('/api/users/:user', (req, res) => {
+			res.json({ success: true, data: req.user });
 		});
-		this.server.get('/api/users/:user/configs', (request, response) => {
-			this.requestIPC({ route: 'userConfigs', userID: request.user.id })
-				.then(data => response.json({ success: true, data }))
-				.catch(() => this.throw(response, ...this.error.USER_NOT_FOUND));
+		this.server.get('/api/users/:user/configs', (req, res) => {
+			this.requestIPC({ route: 'userConfigs', userID: req.user.id })
+				.then(data => this.sendMessage(res, data.response))
+				.catch(() => this.throw(res, ...this.error.USER_NOT_FOUND));
 		});
 		this.server.put('/api/users/:user/configs', (req, res) => {
 			if (!req.headers.authorization || !allowedSocialTokens.includes(req.headers.authorization)) return this.throw(res, ...this.error.DENIED_ACCESS);
@@ -100,29 +100,21 @@ class SkyraServer {
 			else if (!TYPE_TYPES.has(req.body.type)) return this.throw(res, ...this.error.INVALID_ARGUMENT('type', 'INVALID_TYPE'));
 
 			return this.requestIPC({ route: 'postUserConfigs', userID: req.user.id, type: req.body.type, action: req.body.action, amount: req.body.amount })
-				.then(data => this.sendMessage(res, data))
+				.then(data => this.sendMessage(res, data.response))
 				.catch(error => this.sendError(res, error));
 		});
 
 		this.server.listen(options.port, () => console.log(`[SERVER] Started.\n[PORT  ] ${options.port}`));
 	}
 
-	async requestIPC(data) {
-		try {
-			console.log('Input', data);
-			const output = await this.ipc.send('skyra-dashboard', data);
-			console.log('Output', output);
-			return output;
-		} catch (error) {
-			console.error('Error', error);
-			throw error;
-		}
+	requestIPC(data) {
+		return this.ipc.send('skyra-dashboard', data);
 	}
 
 	throw(res, code, message, type) {
 		const output = { success: false, message };
 		if (type) Object.assign(output, { type });
-		res.status(code).send(output);
+		res.status(code).json(output);
 	}
 
 	sendError(res, error) {
@@ -131,9 +123,9 @@ class SkyraServer {
 	}
 
 	sendMessage(res, data) {
-		res.send({ success: true, data });
+		res.json({ success: true, data: data.response || data });
 	}
 
 }
 
-module.exports = new SkyraServer({ port: 3000 });
+module.exports = new SkyraServer({ port: 80 });
