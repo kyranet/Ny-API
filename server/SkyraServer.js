@@ -2,11 +2,16 @@ const express = require('express');
 const { Server } = require('ipc-link');
 const { join } = require('path');
 const bodyParser = require('body-parser');
+
 const { api: { allowedSocialTokens } } = require('../config');
+const MessageHandler = require('./MessageHandler');
+const FileManager = require('./Crypto/FileManager');
 
 const DIST_FOLDER = join(__dirname, '..', 'dist');
 const ACTION_TYPES = new Set(['set', 'add', 'remove']);
 const TYPE_TYPES = new Set(['money', 'points']);
+
+/* eslint-disable new-cap */
 
 class SkyraServer {
 
@@ -16,8 +21,12 @@ class SkyraServer {
 		this.server.use(bodyParser.json());
 		this.server.use(bodyParser.urlencoded({ extended: true }));
 
+		this.messageHandler = new MessageHandler(this);
+		this.fileManager = new FileManager(this);
+		this.fileManager.init();
+
 		this.ipc = new Server('dashboard', { silent: true })
-			.on('message', console.log)
+			.on('message', this.messageHandler.run.bind(this.messageHandler))
 			.on('disconnect', (socket) => console.error(`Disconnected socket ${socket}`))
 			.on('error', console.error)
 			.once('start', () => console.log('[IPC   ] Started'))
@@ -69,6 +78,16 @@ class SkyraServer {
 		});
 
 		// API
+		this.server.get('/api/gist/:id/:key', async (req, res) => {
+			try {
+				if (!req.params.id) return this.throw(res, ...this.error.INVALID_ARGUMENT('id', 'MISSING_ARGUMENT'));
+				if (!req.params.key) return this.throw(res, ...this.error.INVALID_ARGUMENT('key', 'MISSING_ARGUMENT'));
+				const result = await this.fileManager.decryptFile(req.params.id, req.params.key);
+				return res.json({ success: true, data: result });
+			} catch (error) {
+				return this.throw(res, ...this.error.ERROR(error));
+			}
+		});
 		this.server.param('user', async (request, response, next, value) => {
 			const result = await this.requestIPC({ route: 'user', userID: value });
 			if (result.success) {
@@ -92,7 +111,6 @@ class SkyraServer {
 		});
 		this.server.put('/api/users/:user/configs', (req, res) => {
 			if (!req.headers.authorization || !allowedSocialTokens.includes(req.headers.authorization)) return this.throw(res, ...this.error.DENIED_ACCESS);
-			if (!('userID' in req.body)) return this.throw(res, ...this.error.INVALID_ARGUMENT('userID', 'MISSING_ARGUMENTS'));
 			if (!('amount' in req.body)) return this.throw(res, ...this.error.INVALID_ARGUMENT('amount', 'MISSING_ARGUMENTS'));
 			if (!('action' in req.body)) req.body.action = 'set';
 			else if (!ACTION_TYPES.has(req.body.action)) return this.throw(res, ...this.error.INVALID_ARGUMENT('action', 'INVALID_TYPE'));
@@ -128,4 +146,4 @@ class SkyraServer {
 
 }
 
-module.exports = new SkyraServer({ port: 80 });
+module.exports = new SkyraServer({ port: 1337 });

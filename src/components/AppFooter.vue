@@ -4,9 +4,8 @@
 			<div class="columns">
 				<div class="column">
 					<p>
-						Built upon a year, Skyra is a standalone Discord Bot designed to run almost every task needed for the majority of guilds.
-						It's built on the framework Klasa and features a lightning-fast system that is also easy to use, Skyra is 24/7 online with
-						almost no downtime.
+						Built over a year and a half, Skyra is a multipurpose Discord Bot designed to run almost every task needed for the majority of guilds.
+						It's built on the framework Klasa and features a lightning-fast system that is also easy to use and has almost no downtime.
 					</p>
 				</div>
 				<div class="column has-text-centered">
