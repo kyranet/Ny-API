@@ -1,5 +1,5 @@
 const express = require('express');
-const { Server } = require('ipc-link');
+const { Node } = require('veza');
 const { join } = require('path');
 const bodyParser = require('body-parser');
 
@@ -25,12 +25,14 @@ class SkyraServer {
 		this.fileManager = new FileManager(this);
 		this.fileManager.init();
 
-		this.ipc = new Server('dashboard', { silent: true })
-			.on('message', this.messageHandler.run.bind(this.messageHandler))
-			.on('disconnect', (socket) => console.error(`Disconnected socket ${socket}`))
-			.on('error', console.error)
-			.once('start', () => console.log('[IPC   ] Started'))
-			.start();
+		this.ipc = new Node('skyra-dashboard')
+			.on('connect', name => console.log(`[IPC   ] Connected to ${name}`))
+			.on('disconnect', name => console.warn(`[IPC   ] Disconnected from ${name}`))
+			.on('destroy', name => console.warn(`[IPC   ] Destroyed connection with Node ${name}`))
+			.on('error', console.error.bind(null, '[IPC   ]'))
+			.on('message', this.messageHandler.run.bind(this.messageHandler));
+
+		this.ipc.serve('skyra-dashboard', 8800);
 
 		this.supportGuild = 'https://discordapp.com/invite/6gakFR2';
 		this.donateUrl = 'https://www.patreon.com/kyranet';
