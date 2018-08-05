@@ -42,6 +42,24 @@ class MessageHandler {
 		}
 	}
 
+	async twitchSubscribe(message) {
+		try {
+			await this.twitch.subscribe(message.data.id);
+			message.reply({ success: true });
+		} catch (error) {
+			message.reply({ success: false, code: 403, type: 'TWITCH_SUBSCRIBE_ERROR', error });
+		}
+	}
+
+	async twitchUnsubscribe(message) {
+		try {
+			await this.twitch.unsubscribe(message.data.id);
+			message.reply({ success: true });
+		} catch (error) {
+			message.reply({ success: false, code: 403, type: 'TWITCH_UNSUBSCRIBE_ERROR', error });
+		}
+	}
+
 	async eval(message) {
 		try {
 			const result = await eval(message.data.code);

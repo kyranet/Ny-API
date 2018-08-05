@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 const { api: { allowedSocialTokens } } = require('../config');
 const MessageHandler = require('./MessageHandler');
 const FileManager = require('./Crypto/FileManager');
+const Twitch = require('./Twitch/Twitch');
 
 const DIST_FOLDER = join(__dirname, '..', 'dist');
 const ACTION_TYPES = new Set(['set', 'add', 'remove']);
@@ -24,6 +25,9 @@ class SkyraServer {
 		this.messageHandler = new MessageHandler(this);
 		this.fileManager = new FileManager(this);
 		this.fileManager.init();
+
+		this.twitch = new Twitch(this);
+		this.twitch.init();
 
 		this.ipc = new Server('dashboard', { silent: true })
 			.on('message', this.messageHandler.run.bind(this.messageHandler))
@@ -78,6 +82,12 @@ class SkyraServer {
 		});
 
 		// API
+		this.server.post('/api/twitch/callback/:id', async (req, res) => {
+			const output = this.twitch.parse(req.params.id, req.body);
+			console.log('Webhook data received:', req.body, output);
+			if (output) this.requestIPC(output);
+			return res.end('{"success":true}');
+		});
 		this.server.get('/api/gist/:id/:key', async (req, res) => {
 			try {
 				if (!req.params.id) return this.throw(res, ...this.error.INVALID_ARGUMENT('id', 'MISSING_ARGUMENT'));
