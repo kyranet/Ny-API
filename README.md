@@ -1,3 +1,3 @@
-# Skyra-Vue
+# Skyra-API
 
-Work in Progress
+Microservice for Skyra's network, designed to handle API requests
