@@ -10,11 +10,14 @@ class IPCMonitorStore extends Map {
 		if (!message.data.payload) return message.reply({ success: false, message: 'MISSING_PAYLOAD' });
 
 		const monitor = this.get(message.data.route);
-		return message.reply(monitor
-			? Promise.resolve(monitor.run(message.data.payload)).then(
-				res => ({ success: true, message: clean(res) }),
-				err => ({ success: false, message: err }))
-			: { success: false, message: 'UNKNOWN_ROUTE' });
+		if (!monitor) return message.reply({ success: false, message: 'UNKNOWN_ROUTE' });
+
+		try {
+			const result = await monitor.run(message.data.payload);
+			return message.reply({ success: true, message: clean(result) });
+		} catch (error) {
+			return message.reply({ success: false, message: clean(error) });
+		}
 	}
 
 	set(piece) {
