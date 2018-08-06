@@ -40,7 +40,7 @@ class APIClient {
 	}
 
 	ipcRequest(data, receptive = true) {
-		return this.ipc.sendTo('skyra-dashboard', data, receptive);
+		return this.ipc.sendTo('skyra-bot', data, receptive);
 	}
 
 	static async walk(type, store) {
