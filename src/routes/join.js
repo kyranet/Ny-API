@@ -8,7 +8,7 @@ module.exports = class extends Route {
 
 	async get(request, response) {
 		const link = await this.client.ipcRequest({ route: 'join' });
-		return response.end(JSON.stringify({ success: true, message: link }));
+		return response.end(JSON.stringify({ success: true, message: link.response }));
 	}
 
 };
