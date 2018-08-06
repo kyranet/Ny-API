@@ -4,7 +4,6 @@ class IPCMonitor {
 		this.client = store.client;
 		this.store = store;
 		this.name = options.name;
-		this.priority = options.priority;
 	}
 
 	async run(message) { // eslint-disable-line

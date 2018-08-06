@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "fs-nextra": "^0.3.7",
-    "veza": "^0.2.2"
+    "veza": "^0.2.3"
   },
   "devDependencies": {
     "eslint": "^5.3.0",
