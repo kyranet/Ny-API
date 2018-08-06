@@ -13,7 +13,7 @@ module.exports = class extends Route {
 		return response.end(JSON.stringify({ success: true, message: configs }));
 	}
 
-	async put(request, response) {
+	async post(request, response) {
 		if (!request.query.user) return response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
 
 		if (!request.headers.authorization || !allowedSocialTokens.includes(request.headers.authorization)) {
