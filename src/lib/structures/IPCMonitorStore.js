@@ -11,7 +11,9 @@ class IPCMonitorStore extends Map {
 
 		const monitor = this.get(message.data.route);
 		return message.reply(monitor
-			? monitor.run(message.data.payload).then(result => ({ success: true, message: clean(result) }), error => ({ success: false, message: error }))
+			? Promise.resolve(monitor.run(message.data.payload)).then(
+				res => ({ success: true, message: clean(res) }),
+				err => ({ success: false, message: err }))
 			: { success: false, message: 'UNKNOWN_ROUTE' });
 	}
 
