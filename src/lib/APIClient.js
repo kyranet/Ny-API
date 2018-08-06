@@ -48,7 +48,6 @@ class APIClient {
 		const files = await scan(directory, { filter: (stats, path) => stats.isFile() && extname(path) === '.js' })
 			.catch(() => new Map());
 
-		console.log(`[LOADER] Loading ${files.size} elements of type ${type}...`);
 		await Promise.all([...files.keys()].map(async (file) => {
 			try {
 				const Piece = require(file);

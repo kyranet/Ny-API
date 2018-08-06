@@ -15,6 +15,11 @@ class IPCMonitorStore extends Map {
 			: { success: false, message: 'UNKNOWN_ROUTE' });
 	}
 
+	set(piece) {
+		super.set(piece.name, piece);
+		return piece;
+	}
+
 }
 
 const { inspect } = require('util');
