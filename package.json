@@ -12,10 +12,10 @@
   },
   "dependencies": {
     "fs-nextra": "^0.3.7",
-    "veza": "^0.2.3"
+    "veza": "github:kyranet/veza"
   },
   "devDependencies": {
-    "eslint": "^5.3.0",
+    "eslint": "^5.5.0",
     "eslint-config-klasa": "github:dirigeants/klasa-lint"
   }
 }

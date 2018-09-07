@@ -13,16 +13,17 @@ class APIClient {
 		this.middlewares = new MiddlewareStore(this);
 		this.ipcMonitors = new IPCMonitorStore(this);
 		this.ipc = new Node('skyra-dashboard')
-			.on('connection', name => console.log(`[IPC   ] Connected to ${name}`))
-			.on('disconnect', name => console.warn(`[IPC   ] Disconnected from ${name}`))
-			.on('destroy', name => console.warn(`[IPC   ] Destroyed connection with Node ${name}`))
-			.on('error', console.error.bind(null, '[IPC   ]'))
+			.on('client.connect', (client) => console.log(`[IPC   ] Client Connected: ${client.name}`))
+			.on('client.disconnect', (client) => console.log(`[IPC   ] Client Disconnected: ${client.name}`))
+			.on('client.destroy', (client) => console.log(`[IPC   ] Client Destroyed: ${client.name}`))
+			.on('server.ready', (server) => console.log(`[IPC   ] Client Ready: Named ${server.name}`))
+			.on('error', (error, client) => console.error(`[IPC   ] Error from ${client.name}`, error))
 			.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 	}
 
 	async start(port) {
 		console.log(`[IPC   ] Attempting to listen to port 8800`);
-		this.ipc.serve('skyra-dashboard', 8800);
+		this.ipc.serve(8800);
 
 		console.log(`[HTTP  ] Attempting to listen to port ${port}...`);
 		await this.server.listen(port).catch((error) => {
@@ -40,7 +41,7 @@ class APIClient {
 	}
 
 	ipcRequest(data, receptive = true) {
-		return this.ipc.sendTo('skyra-bot', data, receptive);
+		return this.ipc.sendTo('skyra-bot', data, { receptive, timeout: 10000 });
 	}
 
 	static async walk(type, store) {
@@ -51,8 +52,8 @@ class APIClient {
 		await Promise.all([...files.keys()].map(async (file) => {
 			try {
 				const Piece = require(file);
-				const insta = new Piece(store);
-				store.set(insta);
+				const instance = new Piece(store);
+				store.set(instance);
 				return store;
 			} catch (error) {
 				console.error(error);
