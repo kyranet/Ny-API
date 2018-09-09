@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "fs-nextra": "^0.3.7",
-    "veza": "github:kyranet/veza"
+    "veza": "^0.3.1"
   },
   "devDependencies": {
     "eslint": "^5.5.0",

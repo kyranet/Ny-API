@@ -13,7 +13,7 @@ class APIClient {
 		this.middlewares = new MiddlewareStore(this);
 		this.ipcMonitors = new IPCMonitorStore(this);
 		this.ipc = new Node('skyra-dashboard')
-			.on('client.connect', (client) => console.log(`[IPC   ] Client Connected: ${client.name}`))
+			.on('client.identify', (client) => console.log(`[IPC   ] Client Connected: ${client.name}`))
 			.on('client.disconnect', (client) => console.log(`[IPC   ] Client Disconnected: ${client.name}`))
 			.on('client.destroy', (client) => console.log(`[IPC   ] Client Destroyed: ${client.name}`))
 			.on('server.ready', (server) => console.log(`[IPC   ] Client Ready: Named ${server.name}`))
