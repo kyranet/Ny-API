@@ -93,7 +93,7 @@ export class Collection<K, V> extends Map<K, V> {
 	 * amount is negative
 	 */
 	public last(amount: 0): [];
-	public last(amount?: 0 | 1): V;
+	public last(amount?: 1): V;
 	public last(amount: number): V[];
 	public last(amount?: number): V | V[] {
 		const arr = this.array();
