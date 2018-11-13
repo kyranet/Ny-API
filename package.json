@@ -1,21 +1,48 @@
 {
-  "name": "skyra-api",
-  "version": "2.0.0",
-  "description": "Skyra API Microservice",
-  "author": "kyranet <kyradiscord@gmail.com>",
-  "private": true,
-  "main": "server",
+  "name": "ny-api",
+  "version": "3.0.0",
+  "description": "NyProject API Microservice",
+  "main": "dist/src/NyAPI.js",
   "scripts": {
-    "start": "node .",
-    "lint": "eslint src",
-    "lint:fix": "eslint --fix src"
+    "lint": "tslint --fix src",
+    "pm2:delete": "pm2 delete API",
+    "pm2:logs": "pm2 logs API --lines=200",
+    "pm2:restart": "pm2 restart API",
+    "pm2:start-harmony": "pm2 start dist/NyAPI.js --node-args=\"--harmony\" --name=\"API\"",
+    "pm2:start": "pm2 start dist/NyAPI.js --name=\"API\"",
+    "pm2:stop": "pm2 stop API",
+    "start": "node dist/NyAPI.js",
+    "test": "tslint src",
+    "update": "yarn",
+    "compile": "tsc -p ."
   },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/kyranet/Ny-API.git"
+  },
+  "keywords": [
+    "Web API",
+    "REST API",
+    "NyProject"
+  ],
+  "contributors": [
+    "kyranet"
+  ],
+  "private": true,
+  "author": "kyranet <kyradiscord@gmail.com>",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/kyranet/Ny-API/issues"
+  },
+  "homepage": "https://github.com/kyranet/Ny-API#readme",
   "dependencies": {
     "fs-nextra": "^0.3.7",
     "veza": "^0.3.1"
   },
   "devDependencies": {
-    "eslint": "^5.5.0",
-    "eslint-config-klasa": "github:dirigeants/klasa-lint"
+    "@types/node": "^10.12.6",
+    "eslint-config-klasa": "github:dirigeants/klasa-lint",
+    "tslint": "^5.11.0",
+    "typescript": "^3.1.6"
   }
 }

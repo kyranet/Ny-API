@@ -1,3 +1,3 @@
-# Skyra-API
+# Ny-API
 
-Microservice for Skyra's network, designed to handle API requests
+Microservice for Ny-API, provides backend functionality for Skyra's dashboard.
