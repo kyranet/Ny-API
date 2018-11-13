@@ -6,6 +6,7 @@ import { ConstructorType } from '../../klasa-dashboard-hooks/lib/util/Util';
 import { Piece, PieceOptions } from './structures/base/Piece';
 import { Store } from './structures/base/Store';
 import { KlasaConsole, KlasaConsoleOptions } from './util/KlasaConsole';
+import { Stopwatch } from './util/Stopwatch';
 
 export type ClientOptions = {
 	pieceDefaults?: Record<string, PieceOptions>;
@@ -44,4 +45,17 @@ export class Client extends EventEmitter {
 		this.pieceStores.delete(storeName);
 		return this;
 	}
+
+	public async start(): Promise<void> {
+		const timer = new Stopwatch();
+		try {
+			const loaded = await Promise.all(this.pieceStores.map(async(store) => `Loaded ${await store.loadAll()} ${store.name}.`));
+			this.console.log(loaded.join('\n'));
+			this.console.log(`Loaded in ${timer.stop()}.`);
+		} catch (error) {
+			this.console.error(error);
+			process.exit();
+		}
+	}
+
 }

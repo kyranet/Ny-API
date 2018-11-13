@@ -111,7 +111,7 @@ export class Server {
 			await this.client.middlewares.run(klasaRequest, response, route);
 			await (route ? route[METHODS_LOWER[request.method]](request, response) : this.onNoMatch(request, response));
 		} catch (err) {
-			this.client.emit('error', err);
+			this.client.console.error(err);
 			this.onError(err, klasaRequest, response);
 		}
 	}
@@ -124,7 +124,7 @@ export class Server {
 	 */
 	public onError(error: ErrorLike, _: KlasaIncomingMessage, response: ServerResponse): void {
 		const code = response.statusCode = error.code || error.status || error.statusCode || 500;
-		response.end(error || error.message || STATUS_CODES[code]);
+		response.end(error.message || STATUS_CODES[code]);
 	}
 
 }

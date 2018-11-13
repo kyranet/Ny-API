@@ -62,5 +62,3 @@ export class DashboardGuild {
 	}
 
 }
-
-module.exports = DashboardGuild;

@@ -1,7 +1,7 @@
 import { createGunzip, createInflate, Gunzip, Inflate } from 'zlib';
 import { DashboardClient, KlasaIncomingMessage, Middleware, MiddlewareStore } from '../lib/third_party/klasa-dashboard-hooks';
 
-module.exports = class extends Middleware {
+export default class extends Middleware {
 
 	public constructor(client: DashboardClient, store: MiddlewareStore, file: string[], directory: string) {
 		super(client, store, file, directory, { priority: 20 });
@@ -38,4 +38,4 @@ module.exports = class extends Middleware {
 		return stream;
 	}
 
-};
+}

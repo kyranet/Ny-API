@@ -6,7 +6,7 @@ import { IPCMonitor } from './IPCMonitor';
 export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<IPCMonitor>> {
 
 	public constructor(client: DashboardClient) {
-		super(client, 'middlewares', IPCMonitor as ConstructorType<IPCMonitor>);
+		super(client, 'ipcMonitors', IPCMonitor as ConstructorType<IPCMonitor>);
 	}
 
 	public async run(message: NodeMessage): Promise<any> {

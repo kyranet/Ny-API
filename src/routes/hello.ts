@@ -4,7 +4,7 @@ import { DashboardClient, KlasaIncomingMessage, Route, RouteStore } from '../lib
 export default class extends Route {
 
 	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string) {
-		super(client, store, file, directory, { name: '/' });
+		super(client, store, file, directory, { route: '/' });
 	}
 
 	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {

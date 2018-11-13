@@ -66,7 +66,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 			if (!isClass(KlasaPiece)) throw new TypeError('The exported structure is not a class.');
 			piece = this.set(new KlasaPiece(this.client, this, file, directory));
 		} catch (error) {
-			this.client.emit('wtf', `Failed to load file '${loc}'. Error:\n${error.stack || error}`);
+			this.client.console.wtf(`Failed to load file '${loc}'. Error:\n${error.stack || error}`);
 		}
 
 		// tslint:disable-next-line no-dynamic-delete
@@ -92,7 +92,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	// @ts-ignore
 	public set(piece: V): V | null {
 		if (!(piece instanceof this.holds)) {
-			this.client.emit('error', `Only ${this} may be stored in this Store.`);
+			this.client.console.error(`Only ${this} may be stored in this Store.`);
 			return null;
 		}
 		const existing = this.get(<unknown> piece.name as K);
@@ -143,11 +143,13 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	 * @param directory The directory to walk in
 	 */
 	public static async walk<K, V extends Piece, C extends new (...args: any[]) => V>(store: Store<K, V, C>, directory: string = store.userDirectory): Promise<Array<Piece>> {
-		const files = await scan(directory, { filter: (stats, path) => stats.isFile() && extname(path) === '.js' })
-			.catch(() => { ensureDir(directory).catch((err) => store.client.emit('error', err)); });
-		if (!files) return [];
-
-		return Promise.all([...files.keys()].map((file) => store.load(directory, relative(directory, file).split(sep))));
+		try {
+			const files = await scan(directory, { filter: (stats, path) => stats.isFile() && extname(path) === '.js' });
+			return Promise.all([...files.keys()].map((file) => store.load(directory, relative(directory, file).split(sep))));
+		} catch (error) {
+			await ensureDir(directory);
+			store.client.console.error(error);
+		}
 	}
 
 }

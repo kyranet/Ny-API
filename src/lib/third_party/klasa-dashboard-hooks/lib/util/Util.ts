@@ -23,9 +23,9 @@ export function parsePart(val: string): ParsedPart {
  * @param url The url to split
  */
 export function split(url: string): string[] {
-	if (url.length === 1 && url.charCodeAt(0) === SLASH) return [url];
+	if (url.length === 1 && url.charCodeAt(0) === SLASH) return [];
 	else if (url.charCodeAt(0) === SLASH) url = url.substring(1);
-	return url.split('/');
+	return url.split('/').filter(Boolean);
 }
 
 /**

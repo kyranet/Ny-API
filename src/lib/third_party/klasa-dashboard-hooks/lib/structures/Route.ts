@@ -55,5 +55,3 @@ export class Route extends Piece {
 	}
 
 }
-
-module.exports = Route;
