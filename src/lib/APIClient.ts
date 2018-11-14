@@ -22,8 +22,15 @@ export class APIClient extends DashboardClient {
 		this.registerStore(this.ipcMonitors);
 	}
 
-	public ipcRequest<T>(data: any, receptive: boolean = true): Promise<T> {
-		return this.ipc.sendTo('skyra-master', data, { receptive, timeout: 10000 });
+	public ipcRequest<T>(socket: Sockets, data: any, receptive: boolean = true): Promise<T> {
+		return this.ipc.sendTo(socket, data, { receptive, timeout: 10000 });
 	}
 
+}
+
+export enum Sockets {
+	Skyra = 'skyra-master',
+	Aelia = 'aelia-master',
+	Alestra = 'alestra-master',
+	Evlyn = 'evlyn-master'
 }

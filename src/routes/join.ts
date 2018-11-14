@@ -1,5 +1,5 @@
 import { ServerResponse } from 'http';
-import { APIClient } from '../lib/APIClient';
+import { APIClient, Sockets } from '../lib/APIClient';
 import { DashboardClient, KlasaIncomingMessage, Route, RouteStore } from '../lib/third_party/klasa-dashboard-hooks';
 
 export default class extends Route {
@@ -11,7 +11,7 @@ export default class extends Route {
 	}
 
 	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		const link = await this.client.ipcRequest<{ response: string }>({ route: 'join' });
+		const link = await this.client.ipcRequest<{ response: string }>(Sockets.Skyra, { route: 'join' });
 		return response.end(JSON.stringify({ success: true, message: link.response }));
 	}
 

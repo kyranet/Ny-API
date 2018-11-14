@@ -1,5 +1,5 @@
 import { ServerResponse } from 'http';
-import { APIClient } from '../../lib/APIClient';
+import { APIClient, Sockets } from '../../lib/APIClient';
 import { DashboardClient, KlasaIncomingMessage, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
 
 export default class extends Route {
@@ -12,7 +12,7 @@ export default class extends Route {
 
 	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
 		if (!request.query.user) return response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
-		const user = await this.client.ipcRequest({ route: 'user', userID: request.query.user });
+		const user = await this.client.ipcRequest(Sockets.Skyra, { route: 'user', userID: request.query.user });
 		return response.end(JSON.stringify({ success: true, message: user }));
 	}
 
