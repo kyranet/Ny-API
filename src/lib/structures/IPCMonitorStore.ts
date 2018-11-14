@@ -10,17 +10,26 @@ export class IPCMonitorStore extends Store<string, IPCMonitor, ConstructorType<I
 	}
 
 	public async run(message: NodeMessage): Promise<any> {
-		if (!message.data.route) return message.reply({ success: false, message: 'UNKNOWN_ROUTE' });
-		if (!message.data.payload) return message.reply({ success: false, message: 'MISSING_PAYLOAD' });
+		if (!message.data.route) {
+			message.reply({ success: false, message: 'UNKNOWN_ROUTE' });
+			return;
+		}
+		if (!message.data.payload) {
+			message.reply({ success: false, message: 'MISSING_PAYLOAD' });
+			return;
+		}
 
 		const monitor = this.get(message.data.route);
-		if (!monitor) return message.reply({ success: false, message: 'UNKNOWN_ROUTE' });
+		if (!monitor) {
+			message.reply({ success: false, message: 'UNKNOWN_ROUTE' });
+			return;
+		}
 
 		try {
 			const result = await monitor.run(message.data.payload);
-			return message.reply({ success: true, result });
+			message.reply({ success: true, result });
 		} catch (error) {
-			return message.reply({ success: false, error });
+			message.reply({ success: false, error });
 		}
 	}
 

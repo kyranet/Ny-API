@@ -4,12 +4,12 @@ export class Colors {
 	/**
 	 * The opening tags
 	 */
-	private opening: string;
+	private readonly opening: string;
 
 	/**
 	 * The closing tags
 	 */
-	private closing: string;
+	private readonly closing: string;
 
 	public constructor(options: ColorsFormatOptions = {}) {
 		const { opening, closing } = Colors.text(options.text, Colors.background(options.background, Colors.style(options.style)));
@@ -71,6 +71,9 @@ export class Colors {
 
 }
 
+/**
+ * The color format options
+ */
 export type ColorsFormatOptions = {
 	/**
 	 * The style or styles to apply
@@ -86,6 +89,9 @@ export type ColorsFormatOptions = {
 	text?: ConsoleTexts;
 };
 
+/**
+ * The format data used during parsing
+ */
 type ColorsFormatData = {
 	/**
 	 * The opening format data styles
@@ -133,7 +139,13 @@ export enum ConsoleClose {
 	 * Strikethrough text style
 	 */
 	strikethrough = 29,
+	/**
+	 * The text closing code
+	 */
 	text = 39,
+	/**
+	 * The background closing code
+	 */
 	background = 49
 }
 
@@ -211,6 +223,9 @@ export enum ConsoleTexts {
 	 * The gray color
 	 */
 	gray = 90,
+	/**
+	 * The grey color
+	 */
 	grey = 90,
 	/**
 	 * The light blue color
@@ -228,6 +243,9 @@ export enum ConsoleTexts {
 	 * The light grey color
 	 */
 	lightgray = 37,
+	/**
+	 * The light grey color
+	 */
 	lightgrey = 37,
 	/**
 	 * The light magenta color
@@ -283,6 +301,9 @@ export enum ConsoleBackgrounds {
 	 * The gray color
 	 */
 	gray = 47,
+	/**
+	 * The grey color
+	 */
 	grey = 47,
 	/**
 	 * The light blue color
@@ -300,6 +321,9 @@ export enum ConsoleBackgrounds {
 	 * The light grey color
 	 */
 	lightgray = 100,
+	/**
+	 * The light grey color
+	 */
 	lightgrey = 100,
 	/**
 	 * The light magenta color

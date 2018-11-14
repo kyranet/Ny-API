@@ -10,11 +10,11 @@ const r = new Colors({ text: ConsoleTexts.red }).format('[IPC   ]');
 export class APIClient extends DashboardClient {
 	public ipcMonitors = new IPCMonitorStore(this);
 	public ipc = new Node('ny-api')
-		.on('client.identify', (client) => this.console.log(`${g} Client Connected: ${client.name}`))
-		.on('client.disconnect', (client) => this.console.log(`${y} Client Disconnected: ${client.name}`))
-		.on('client.destroy', (client) => this.console.log(`${y} Client Destroyed: ${client.name}`))
-		.on('server.ready', (server) => this.console.log(`${g} Client Ready: Named ${server.name}`))
-		.on('error', (error, client) => this.console.error(`${r} Error from ${client.name}`, error))
+		.on('client.identify', (client) => { this.console.log(`${g} Client Connected: ${client.name}`); })
+		.on('client.disconnect', (client) => { this.console.log(`${y} Client Disconnected: ${client.name}`); })
+		.on('client.destroy', (client) => { this.console.log(`${y} Client Destroyed: ${client.name}`); })
+		.on('server.ready', (server) => { this.console.log(`${g} Client Ready: Named ${server.name}`); })
+		.on('error', (error, client) => { this.console.error(`${r} Error from ${client.name}`, error); })
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
 	public constructor(options?: DashboardClientOptions) {
@@ -28,9 +28,24 @@ export class APIClient extends DashboardClient {
 
 }
 
+/**
+ * The sockets this IPC handler can send to
+ */
 export enum Sockets {
+	/**
+	 * The socket name for Skyra
+	 */
 	Skyra = 'skyra-master',
+	/**
+	 * The socket name for Aelia
+	 */
 	Aelia = 'aelia-master',
+	/**
+	 * The socket name for Alestra
+	 */
 	Alestra = 'alestra-master',
+	/**
+	 * The socket name for Evlyn
+	 */
 	Evlyn = 'evlyn-master'
 }

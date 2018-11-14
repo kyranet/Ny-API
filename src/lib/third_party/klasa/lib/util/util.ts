@@ -9,11 +9,11 @@ export function isObject(input: any): boolean {
 	return input && input.constructor === Object;
 }
 
+export const PRIMITIVE_TYPES = ['string', 'bigint', 'number', 'boolean'];
+
 export function isPrimitive(value: any): boolean {
 	return PRIMITIVE_TYPES.includes(typeof value);
 }
-
-export const PRIMITIVE_TYPES = ['string', 'bigint', 'number', 'boolean'];
 
 export function mergeDefault<T = Record<string, any>, S = Record<string, any>>(def: T, given?: S): T & S {
 	if (!given) return deepClone(<T & S> def);

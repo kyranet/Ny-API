@@ -9,6 +9,9 @@ import { HttpMethods } from '../structures/RouteStore';
 import { METHODS_LOWER } from '../util/constants';
 import { split } from '../util/Util';
 
+/**
+ * The extended KlasaIncomingMessage type
+ */
 export type KlasaIncomingMessage = {
 	/**
 	 * The original URL
@@ -42,6 +45,9 @@ export type KlasaIncomingMessage = {
 	body?: any;
 } & IncomingMessage;
 
+/**
+ * An error-like object
+ */
 type ErrorLike = {
 	code: number;
 	status: number;
@@ -86,7 +92,10 @@ export class Server {
 	public listen(port: number): Promise<void> {
 		this.server.on('request', this.handler.bind(this));
 		return new Promise((res, rej) => {
-			this.server.listen(port, (err) => err ? rej(err) : res());
+			this.server.listen(port, (err) => {
+				if (err) rej(err);
+				else res();
+			});
 		});
 	}
 

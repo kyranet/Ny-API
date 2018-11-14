@@ -3,6 +3,9 @@ import { createCipheriv, createDecipheriv, randomBytes } from 'crypto';
 
 const [SLASH, COLON] = [47, 58];
 
+/**
+ * The parsed parts
+ */
 export type ParsedPart = {
 	val: string;
 	type: number;
@@ -58,4 +61,7 @@ export function decrypt(token: string, secret: string): string {
 	return JSON.parse(decipher.update(data, 'base64', 'utf8') + decipher.final('utf8'));
 }
 
+/**
+ * The constructor type
+ */
 export type ConstructorType<V> = new (...args: any[]) => V;

@@ -11,17 +11,23 @@ export default class extends Route {
 	}
 
 	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		if (!request.query.user) return response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
-		const configs = await this.client.ipcRequest(Sockets.Skyra, { route: 'userConfigs', userID: request.query.user });
-		return response.end(JSON.stringify({ success: true, message: configs }));
+		if (!request.query.user) {
+			response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
+		} else {
+			const settings = await this.client.ipcRequest(Sockets.Skyra, { route: 'userSettings', userID: request.query.user });
+			response.end(JSON.stringify({ success: true, message: settings }));
+		}
 	}
 
 	public async post(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		if (typeof request.query.user !== 'string') return response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
+		if (typeof request.query.user !== 'string') {
+			response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
+			return;
+		}
 
 		// if (!request.headers.authorization || !allowedSocialTokens.includes(request.headers.authorization)) {
 		response.writeHead(403);
-		return response.end(JSON.stringify({ success: false, message: 'DENIED_ACCESS' }));
+		response.end(JSON.stringify({ success: false, message: 'DENIED_ACCESS' }));
 		// }
 
 		// if (!('amount' in request.body)) {

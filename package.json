@@ -4,7 +4,7 @@
   "description": "NyProject API Microservice",
   "main": "dist/src/NyAPI.js",
   "scripts": {
-    "lint": "tslint --fix src",
+    "lint": "tslint -p tsconfig.json src/**/*.ts --fix",
     "pm2:delete": "pm2 delete API",
     "pm2:logs": "pm2 logs API --lines=200",
     "pm2:restart": "pm2 restart API",
@@ -12,7 +12,7 @@
     "pm2:start": "pm2 start dist/NyAPI.js --name=\"API\"",
     "pm2:stop": "pm2 stop API",
     "start": "node dist/NyAPI.js",
-    "test": "tslint src",
+    "test": "tslint -p tsconfig.json src/**/*.ts",
     "update": "yarn",
     "compile": "tsc -p ."
   },

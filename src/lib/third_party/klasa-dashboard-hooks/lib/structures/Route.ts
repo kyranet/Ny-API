@@ -4,7 +4,13 @@ import { DashboardClient } from '../DashboardClient';
 import { parse, ParsedPart } from '../util/Util';
 import { RouteStore } from './RouteStore';
 
+/**
+ * The parsed route pieces
+ */
 export type ParsedRoute = ParsedPart[];
+/**
+ * The route options
+ */
 export type RouteOptions = {
 	route?: string;
 	authenticated?: boolean;

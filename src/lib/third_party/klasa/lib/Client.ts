@@ -8,6 +8,9 @@ import { Store } from './structures/base/Store';
 import { KlasaConsole, KlasaConsoleOptions } from './util/KlasaConsole';
 import { Stopwatch } from './util/Stopwatch';
 
+/**
+ * The client options
+ */
 export type ClientOptions = {
 	pieceDefaults?: Record<string, PieceOptions>;
 	console?: KlasaConsoleOptions;

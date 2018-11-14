@@ -3,6 +3,9 @@ import { Collection } from '../../../collection/lib/Collection';
 import { DashboardClient } from '../DashboardClient';
 import { DashboardGuild, DashboardGuildData } from './DashboardGuild';
 
+/**
+ * The dashboard user data
+ */
 export type DashboardUserData = {
 	avatar: string;
 	discriminator: number;

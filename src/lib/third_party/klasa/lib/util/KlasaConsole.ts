@@ -137,8 +137,14 @@ export class KlasaConsole extends Console {
 
 }
 
+/**
+ * The klasa console types
+ */
 export type KlasaConsoleTypes = 'debug' | 'error' | 'log' | 'verbose' | 'warn' | 'wtf';
 
+/**
+ * The klasa console options
+ */
 export type KlasaConsoleOptions = {
 	/**
 	 * The console color styles
@@ -166,18 +172,48 @@ export type KlasaConsoleOptions = {
 	utc?: boolean;
 };
 
+/**
+ * The color styles
+ */
 export type KlasaConsoleColorStyles<T extends string> = Record<T, KlasaConsoleColorStyle>;
 
+/**
+ * The color style for each part
+ */
 export type KlasaConsoleColorStyle = {
+	/**
+	 * The color style for messages
+	 */
 	message?: ColorsFormatOptions;
+	/**
+	 * The color style for time
+	 */
 	time?: ColorsFormatOptions;
+	/**
+	 * The color style for shard
+	 */
 	shard?: ColorsFormatOptions;
 };
 
+/**
+ * The colors for the console
+ */
 type KlasaConsoleColor = {
+	/**
+	 * The Colors instance for the time
+	 */
 	time: Colors;
+	/**
+	 * The Colors instance for the shard
+	 */
 	shard: Colors;
+	/**
+	 * The Colors instance for the message
+	 */
 	message: Colors;
 };
 
+/**
+ * The supported console methods
+ */
 type ConsoleTypes = 'log' | 'debug' | 'info' | 'warn' | 'error';

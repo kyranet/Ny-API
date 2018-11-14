@@ -3,6 +3,9 @@ import { Collection } from '../../../collection/lib/Collection';
 import { DashboardClient } from '../DashboardClient';
 import { DashboardUser } from './DashboardUser';
 
+/**
+ * The dashboard guild data
+ */
 export type DashboardGuildData = {
 	id: string;
 	name: string;

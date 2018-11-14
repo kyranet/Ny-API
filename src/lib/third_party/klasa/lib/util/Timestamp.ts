@@ -2,8 +2,17 @@
 import { TIMES } from './constants';
 const { SECOND, MINUTE, DAY, DAYS, MONTHS, TIMESTAMP: {TOKENS} } = TIMES;
 
+/**
+ * The internal timestamp object for the pattern
+ */
 type TimestampObject = {
+	/**
+	 * The type of this object, if any
+	 */
 	type: string;
+	/**
+	 * The content of this object
+	 */
 	content?: string;
 };
 

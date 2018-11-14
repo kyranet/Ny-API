@@ -10,6 +10,9 @@ import { MiddlewareStore } from './structures/MiddlewareStore';
 import { RouteStore } from './structures/RouteStore';
 import { OPTIONS } from './util/constants';
 
+/**
+ * The options for Klasa-Dashboard-Hooks
+ */
 export type KlasaDashboardHooksOptions = {
 	/**
 	 * The route prefix for the api
@@ -33,6 +36,9 @@ export type KlasaDashboardHooksOptions = {
 	sslOptions?: SecureContextOptions;
 };
 
+/**
+ * The DashboardClient options
+ */
 export type DashboardClientOptions = ClientOptions & {
 	dashboardHooks?: KlasaDashboardHooksOptions;
 };
@@ -69,7 +75,8 @@ export class DashboardClient extends Client {
 			.registerStore(this.routes)
 			.registerStore(this.middlewares);
 
-		this.server.listen(this.options.dashboardHooks.port);
+		this.server.listen(this.options.dashboardHooks.port)
+			.catch((error) => { this.console.error(error); });
 	}
 
 }

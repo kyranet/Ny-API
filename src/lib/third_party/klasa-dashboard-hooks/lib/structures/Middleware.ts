@@ -6,6 +6,9 @@ import { KlasaIncomingMessage } from '../http/Server';
 import { MiddlewareStore } from './MiddlewareStore';
 import { Route } from './Route';
 
+/**
+ * The middleware options
+ */
 export type MiddlewareOptions = {
 	priority?: number;
 } & PieceOptions;

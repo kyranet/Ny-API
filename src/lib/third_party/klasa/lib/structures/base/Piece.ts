@@ -136,6 +136,9 @@ export class Piece {
 
 }
 
+/**
+ * The piece options
+ */
 export type PieceOptions = {
 	/**
 	 * The name of the piece
@@ -147,6 +150,9 @@ export type PieceOptions = {
 	enabled?: boolean;
 };
 
+/**
+ * The result of a piece to JSON
+ */
 export type PieceToJSON<T extends Required<PieceOptions>> = T & {
 	/**
 	 * The base directory to the pieces folder

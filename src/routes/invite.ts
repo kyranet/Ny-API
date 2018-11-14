@@ -12,7 +12,7 @@ export default class extends Route {
 
 	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
 		const link = await this.client.ipcRequest<{ response: string }>(Sockets.Skyra, { route: 'invite' });
-		return response.end(JSON.stringify({ success: true, message: link.response }));
+		response.end(JSON.stringify({ success: true, message: link.response }));
 	}
 
 }

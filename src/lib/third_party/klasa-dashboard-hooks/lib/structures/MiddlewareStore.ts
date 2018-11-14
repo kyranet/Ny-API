@@ -23,7 +23,7 @@ export class MiddlewareStore extends Store<string, Middleware, ConstructorType<M
 	 */
 	public clear(): void {
 		this.sortedMiddlewares = [];
-		return super.clear();
+		super.clear();
 	}
 
 	/**
