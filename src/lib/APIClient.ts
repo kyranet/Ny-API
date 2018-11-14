@@ -26,6 +26,10 @@ export class APIClient extends DashboardClient {
 		return this.ipc.sendTo(socket, data, { receptive, timeout: 10000 });
 	}
 
+	public broadcastRequest<T>(data: any, receptive: boolean = true): Promise<T[]> {
+		return this.ipc.broadcast(data, { receptive, timeout: 10000 });
+	}
+
 }
 
 /**
