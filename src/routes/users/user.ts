@@ -11,11 +11,13 @@ export default class extends Route {
 	}
 
 	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		if (!request.query.user) {
-			response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
-		} else {
-			const user = await this.client.ipcRequest(Sockets.Skyra, { route: 'user', userID: request.query.user });
-			response.end(JSON.stringify({ success: true, message: user }));
+		try {
+			const user = await this.client.ipcRequest(Sockets.Skyra, { route: 'user', payload: request.query.user });
+			response.writeHead(200);
+			response.end(JSON.stringify({ success: true, data: user }));
+		} catch (error) {
+			response.writeHead(error instanceof Error ? 500 : 404);
+			response.end(JSON.stringify({ success: false, data: error }));
 		}
 	}
 

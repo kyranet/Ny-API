@@ -11,23 +11,20 @@ export default class extends Route {
 	}
 
 	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		if (!request.query.user) {
-			response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
-		} else {
-			const settings = await this.client.ipcRequest(Sockets.Skyra, { route: 'userSettings', userID: request.query.user });
-			response.end(JSON.stringify({ success: true, message: settings }));
+		try {
+			const settings = await this.client.ipcRequest(Sockets.Skyra, { route: 'userSettings', payload: request.query.user });
+			response.writeHead(200);
+			response.end(JSON.stringify({ success: true, data: settings }));
+		} catch (error) {
+			response.writeHead(error instanceof Error ? 500 : 404);
+			response.end(JSON.stringify({ success: false, data: error }));
 		}
 	}
 
-	public async post(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		if (typeof request.query.user !== 'string') {
-			response.end(JSON.stringify({ success: false, message: 'MISSING_USERID' }));
-			return;
-		}
-
+	public async post(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
 		// if (!request.headers.authorization || !allowedSocialTokens.includes(request.headers.authorization)) {
 		response.writeHead(403);
-		response.end(JSON.stringify({ success: false, message: 'DENIED_ACCESS' }));
+		response.end(denied);
 		// }
 
 		// if (!('amount' in request.body)) {
@@ -69,3 +66,5 @@ export default class extends Route {
 
 // const ACTION_TYPES = new Set(['set', 'add', 'remove']);
 // const TYPE_TYPES = new Set(['money', 'points']);
+
+const denied = JSON.stringify({ success: false, data: 'DENIED_ACCESS' });

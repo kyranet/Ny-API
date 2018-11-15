@@ -11,8 +11,14 @@ export default class extends Route {
 	}
 
 	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		const link = await this.client.ipcRequest<{ response: string }>(Sockets.Skyra, { route: 'join' });
-		response.end(JSON.stringify({ success: true, message: link.response }));
+		try {
+			const link = await this.client.ipcRequest<{ response: string }>(Sockets.Skyra, { route: 'join' });
+			response.writeHead(200);
+			response.end(JSON.stringify({ success: true, data: link.response }));
+		} catch (error) {
+			response.writeHead(500);
+			response.end(JSON.stringify({ success: false, data: error }));
+		}
 	}
 
 }
