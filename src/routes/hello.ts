@@ -8,7 +8,9 @@ export default class extends Route {
 	}
 
 	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		response.end(JSON.stringify({ success: true, message: 'Hello World!' }));
+		response.end(reply);
 	}
 
 }
+
+const reply = JSON.stringify({ success: true, data: 'Hello World' });
