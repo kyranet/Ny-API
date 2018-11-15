@@ -13,9 +13,6 @@ export default class extends Route {
 
 	public async post(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
 		if (request.headers.authorization === B4D_TOKEN) {
-			response.writeHead(403);
-			response.end(error);
-		} else {
 			const body: WebhookBody = request.body;
 			if (body.type === 'vote') {
 				try {
@@ -28,6 +25,9 @@ export default class extends Route {
 			}
 			response.writeHead(200);
 			response.end(reply);
+		} else {
+			response.writeHead(403);
+			response.end(error);
 		}
 	}
 
