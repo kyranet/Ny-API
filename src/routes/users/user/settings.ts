@@ -12,7 +12,7 @@ export default class extends Route {
 
 	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
 		try {
-			const settings = await this.client.ipcRequest(Sockets.Skyra, { route: 'userSettings', payload: request.query.user });
+			const settings = await this.client.ipcRequest(Sockets.Skyra, ['userSettings', request.query.user]);
 			response.writeHead(200);
 			response.end(JSON.stringify({ success: true, data: settings }));
 		} catch (error) {
