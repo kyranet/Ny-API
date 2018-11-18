@@ -6,7 +6,7 @@ export default class extends IPCMonitor {
 	public client: APIClient;
 
 	public run(): any {
-		return this.client.broadcastRequest({ route: 'socketStatistics' });
+		return this.client.broadcastRequest(['socketStatistics']);
 	}
 
 }
