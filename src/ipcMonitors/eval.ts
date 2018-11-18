@@ -1,10 +1,15 @@
+import { inspect } from 'util';
 import { IPCMonitor } from '../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	public run(payload: string): any {
+	public async run(payload: string): Promise<any> {
 		if (!payload) throw 'MISSING_PAYLOAD';
-		return eval(payload);
+		try {
+			return inspect(await eval(payload));
+		} catch (error) {
+			return inspect(error);
+		}
 	}
 
 }
