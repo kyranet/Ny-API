@@ -19,7 +19,7 @@ export default class extends Route {
 					await this.client.ipcRequest(Sockets.Skyra, ['webhook', { ...body, from: 'b4d' }]);
 				} catch (error) {
 					response.writeHead(error instanceof Error ? 500 : 400);
-					response.end(JSON.stringify({ success: false, data: error }));
+					response.end(JSON.stringify({ success: false, data: String(error) }));
 					return;
 				}
 			}

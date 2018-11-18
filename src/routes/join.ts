@@ -17,7 +17,7 @@ export default class extends Route {
 			response.end(JSON.stringify({ success: true, data: link.response }));
 		} catch (error) {
 			response.writeHead(500);
-			response.end(JSON.stringify({ success: false, data: error }));
+			response.end(JSON.stringify({ success: false, data: String(error) }));
 		}
 	}
 
