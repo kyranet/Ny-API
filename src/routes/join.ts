@@ -14,7 +14,7 @@ export default class extends Route {
 		try {
 			const link = await this.client.ipcRequest<{ response: string }>(Sockets.Skyra, ['join']);
 			response.writeHead(200);
-			response.end(JSON.stringify({ success: true, data: link.response }));
+			response.end(JSON.stringify({ success: true, data: link }));
 		} catch (error) {
 			response.writeHead(500);
 			response.end(JSON.stringify({ success: false, data: String(error) }));
