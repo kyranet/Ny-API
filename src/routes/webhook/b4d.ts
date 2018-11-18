@@ -16,7 +16,7 @@ export default class extends Route {
 			const body: WebhookBody = request.body;
 			if (body.type === 'vote') {
 				try {
-					await this.client.ipcRequest(Sockets.Skyra, { route: 'webhook', payload: { ...body, from: 'b4d' } });
+					await this.client.ipcRequest(Sockets.Skyra, ['webhook', { ...body, from: 'b4d' }]);
 				} catch (error) {
 					response.writeHead(error instanceof Error ? 500 : 400);
 					response.end(JSON.stringify({ success: false, data: error }));

@@ -22,8 +22,8 @@ export class APIClient extends DashboardClient {
 		this.registerStore(this.ipcMonitors);
 	}
 
-	public async ipcRequest<T>(socket: Sockets, body: any, receptive: boolean = true): Promise<T> {
-		const { success, data } = await this.ipc.sendTo<{ success: boolean; data: T }>(socket, body, { receptive, timeout: 10000 });
+	public async ipcRequest<T>(socket: Sockets, body: [string, any?], receptive: boolean = true): Promise<T> {
+		const [success, data] = await this.ipc.sendTo<[boolean, T]>(socket, body, { receptive, timeout: 10000 });
 		if (success) return data;
 		else throw data;
 	}

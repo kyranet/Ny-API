@@ -7,7 +7,7 @@ export default class extends IPCMonitor {
 
 	public run(payload: Sockets): any {
 		if (!payload) throw 'MISSING_PAYLOAD';
-		return this.client.ipcRequest(payload, { route: 'health' });
+		return this.client.ipcRequest(payload, ['health']);
 	}
 
 }
