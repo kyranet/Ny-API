@@ -28,7 +28,7 @@ export class APIClient extends DashboardClient {
 		else throw data;
 	}
 
-	public broadcastRequest<T>(data: any, receptive: boolean = true): Promise<T[]> {
+	public broadcastRequest<T>(data: [string, any?], receptive: boolean = true): Promise<T[]> {
 		return this.ipc.broadcast(data, { receptive, timeout: 10000 });
 	}
 
