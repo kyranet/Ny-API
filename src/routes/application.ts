@@ -8,17 +8,16 @@ export default class extends Route {
 	public client: APIClient;
 
 	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string) {
-		super(client, store, file, directory, { route: '/join' });
+		super(client, store, file, directory, { route: '/application', authenticated: true });
 	}
 
 	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
 		try {
-			const link = await this.client.ipcRequest<{ response: string }>(Sockets.Skyra, ['join']);
-			response.writeHead(200);
-			response.end(JSON.stringify({ success: true, data: link }));
+			const data = await this.client.ipcRequest(Sockets.Skyra, ['application']);
+			response.end(JSON.stringify({ success: true, data }));
 		} catch (error) {
-			response.writeHead(500);
-			response.end(JSON.stringify({ success: false, data: inspect(error) }));
+			response.writeHead(400);
+			response.end(JSON.stringify({ success: true, data: inspect(error) }));
 		}
 	}
 

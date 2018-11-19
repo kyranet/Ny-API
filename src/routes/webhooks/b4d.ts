@@ -1,4 +1,5 @@
 import { ServerResponse } from 'http';
+import { inspect } from 'util';
 import { B4D_TOKEN } from '../../../config';
 import { APIClient, Sockets } from '../../lib/APIClient';
 import { DashboardClient, KlasaIncomingMessage, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
@@ -19,7 +20,7 @@ export default class extends Route {
 					await this.client.ipcRequest(Sockets.Skyra, ['webhook', { ...body, from: 'b4d' }]);
 				} catch (error) {
 					response.writeHead(error instanceof Error ? 500 : 400);
-					response.end(JSON.stringify({ success: false, data: String(error) }));
+					response.end(JSON.stringify({ success: false, data: inspect(error) }));
 					return;
 				}
 			}

@@ -43,6 +43,19 @@ export type KlasaIncomingMessage = {
 	 * The parsed body, only available after the JSON middleware has run
 	 */
 	body?: any;
+	/**
+	 * The auth data
+	 */
+	auth?: {
+		/**
+		 * The access token
+		 */
+		token: string;
+		/**
+		 * The scope
+		 */
+		scope: string[];
+	};
 } & IncomingMessage;
 
 /**

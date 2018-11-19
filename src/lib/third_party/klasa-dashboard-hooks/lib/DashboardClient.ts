@@ -41,6 +41,8 @@ export type KlasaDashboardHooksOptions = {
  */
 export type DashboardClientOptions = ClientOptions & {
 	dashboardHooks?: KlasaDashboardHooksOptions;
+	clientSecret: string;
+	clientID: string;
 };
 
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
@@ -66,7 +68,7 @@ export class DashboardClient extends Client {
 	/**
 	 * The cache where oauth data is temporarily stored
 	 */
-	public dashboardUsers = new DataStore(this, undefined, DashboardUser);
+	public dashboardUsers: DataStore<string, DashboardUser, typeof DashboardUser> = new DataStore(this, undefined, DashboardUser);
 
 	public constructor(options?: DashboardClientOptions) {
 		super(mergeDefault(OPTIONS, options));

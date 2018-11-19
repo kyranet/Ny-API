@@ -55,7 +55,7 @@ export function encrypt(data: any, secret: string): string {
  * @param token An data to decrypt
  * @param secret The secret to decrypt the data with
  */
-export function decrypt(token: string, secret: string): string {
+export function decrypt(token: string, secret: string): { token: string; scope: string[] } {
 	const [data, iv] = token.split('.');
 	const decipher = createDecipheriv('aes-256-cbc', secret, Buffer.from(iv, 'base64'));
 	return JSON.parse(decipher.update(data, 'base64', 'utf8') + decipher.final('utf8'));

@@ -1,0 +1,9 @@
+import { DashboardClientOptions } from './src/lib/third_party/klasa-dashboard-hooks';
+
+export const B4D_TOKEN = 'TOKEN GOES HERE';
+
+export const CLIENT_OPTIONS: DashboardClientOptions = {
+	clientID: '',
+	clientSecret: '',
+	dashboardHooks: { port: 8282, apiPrefix: '' }
+};

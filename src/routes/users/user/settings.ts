@@ -1,4 +1,5 @@
 import { ServerResponse } from 'http';
+import { inspect } from 'util';
 import { APIClient, Sockets } from '../../../lib/APIClient';
 import { DashboardClient, KlasaIncomingMessage, Route, RouteStore } from '../../../lib/third_party/klasa-dashboard-hooks';
 
@@ -17,7 +18,7 @@ export default class extends Route {
 			response.end(JSON.stringify({ success: true, data: settings }));
 		} catch (error) {
 			response.writeHead(error instanceof Error ? 500 : 404);
-			response.end(JSON.stringify({ success: false, data: String(error) }));
+			response.end(JSON.stringify({ success: false, data: inspect(error) }));
 		}
 	}
 

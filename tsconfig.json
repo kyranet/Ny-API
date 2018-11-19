@@ -5,7 +5,7 @@
 		"lib": ["esnext"],
 		"module": "commonjs",
 		"outDir": "./dist",
-		"types": ["node"],
+		"types": ["node", "node-fetch"],
         "noUnusedLocals": true,
         "noUnusedParameters": true,
         "removeComments": true,
