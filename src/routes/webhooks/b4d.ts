@@ -8,7 +8,7 @@ export default class extends Route {
 	public client: APIClient;
 
 	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string) {
-		super(client, store, file, directory, { route: '/users/b4d' });
+		super(client, store, file, directory, { route: '/webhooks/b4d' });
 	}
 
 	public async post(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
