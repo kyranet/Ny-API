@@ -1,7 +1,5 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
-import { Collection } from '../../../collection/lib/Collection';
 import { DashboardClient } from '../DashboardClient';
-import { DashboardUser } from './DashboardUser';
 
 /**
  * The dashboard guild data
@@ -10,6 +8,8 @@ export type DashboardGuildData = {
 	id: string;
 	name: string;
 	icon: string | null;
+	owner: boolean;
+	permissions: number;
 };
 
 export class DashboardGuild {
@@ -35,15 +35,22 @@ export class DashboardGuild {
 	public icon: string;
 
 	/**
-	 * The OAuth Users this DashboardGuild is for
+	 * Whether or not the user is the owner
 	 */
-	public users: Collection<string, DashboardUser> = new Collection();
+	public owner: boolean;
+
+	/**
+	 * The permissions of this user in this guild
+	 */
+	public permissions: number;
 
 	public constructor(client: DashboardClient, data: DashboardGuildData) {
 		this.client = client;
+		this.owner = data.owner;
+		this.permissions = data.permissions;
+		this.icon = data.icon;
 		this.id = data.id;
 		this.name = data.name;
-		this.icon = data.icon;
 	}
 
 	/**
@@ -60,7 +67,9 @@ export class DashboardGuild {
 		return {
 			icon: this.icon,
 			id: this.id,
-			name: this.name
+			name: this.name,
+			owner: this.owner,
+			permissions: this.permissions
 		};
 	}
 

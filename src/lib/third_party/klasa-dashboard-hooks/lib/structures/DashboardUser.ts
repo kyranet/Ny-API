@@ -58,6 +58,17 @@ export class DashboardUser {
 	 */
 	public username: string;
 
+	public constructor(client: DashboardClient, data: DashboardUserData & { mfaEnabled: never; mfa_enabled: boolean }) {
+		this.client = client;
+		this.username = data.username;
+		this.locale = data.locale;
+		this.mfaEnabled = data.mfa_enabled;
+		this.avatar = data.avatar;
+		this.discriminator = Number(data.discriminator);
+		this.id = data.id;
+		for (const guild of data.guilds) this.guilds.set(guild.id, new DashboardGuild(this.client, guild));
+	}
+
 	public avatarURL(): string {
 		return this.avatar
 			? `https://cdn.discordapp.com/avatars/${this.id}/${this.avatar}.png`
