@@ -4,29 +4,36 @@ import { URL } from 'url';
 import { APIClient } from '../../lib/APIClient';
 import { DashboardClient, encrypt, KlasaIncomingMessage, RESPONSES, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
 
+import {OAUTH2_OPTIONS} from "./../../../config";
+
 export default class extends Route {
 
 	public client: APIClient;
 
 	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string) {
-		super(client, store, file, directory, { route: '/oauth/callback', authenticated: true });
+		super(client, store, file, directory, { route: '/oauth/callback', authenticated: false });
 	}
 
 	public get oauthUser(): Route {
-		return this.store.get('oauthUser') as Route;
+		return this.store.get('oauthuser') as Route;
 	}
 
-	public async post(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		if (!request.body.code) {
+	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+		if (!request.query.code || typeof request.query.code !== "string") {
 			this.noCode(response);
 			return;
 		}
+		
 		const url = new URL('https://discordapp.com/api/oauth2/token');
+		
+		url.searchParams.append('client_id', this.client.options.clientID);
+		url.searchParams.append('client_secret', this.client.options.clientSecret);
 		url.searchParams.append('grant_type', 'authorization_code');
-		url.searchParams.append('redirect_uri', request.body.redirectUri);
-		url.searchParams.append('code', request.body.code);
+		url.searchParams.append('redirect_uri', OAUTH2_OPTIONS.redirectUris);
+		url.searchParams.append('code', request.query.code);
+		url.searchParams.append('scope', OAUTH2_OPTIONS.scopes.join(" "));
+		
 		const res = await fetch(url as any, {
-			headers: { Authorization: `Basic ${Buffer.from(`${this.client.options.clientID}:${this.client.options.clientSecret}`).toString('base64')}` },
 			method: 'POST'
 		});
 		if (!res.ok) {
