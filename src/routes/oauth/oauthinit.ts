@@ -15,19 +15,19 @@ export default class extends Route {
 
 	public get(_request: KlasaIncomingMessage, response: ServerResponse): void {
 
-    const url = new URL('https://discordapp.com/api/oauth2/authorize');
-    
-    // @todo: implement state https://discordapp.com/developers/docs/topics/oauth2#state-and-security
+		const url = new URL('https://discordapp.com/api/oauth2/authorize');
+		
+		// @todo: implement state https://discordapp.com/developers/docs/topics/oauth2#state-and-security
 		url.searchParams.append('client_id', this.client.options.clientID);
 		url.searchParams.append('client_secret', this.client.options.clientSecret);
 		url.searchParams.append('response_type', 'code');
 		url.searchParams.append('redirect_uri', OAUTH2_OPTIONS.redirectUris);
-    url.searchParams.append('scope', OAUTH2_OPTIONS.scopes.join(" "));
+		url.searchParams.append('scope', OAUTH2_OPTIONS.scopes.join(" "));
 
-    response.writeHead(302, {
-      'Location': url.toString()
-    });
-    response.end();
+		response.writeHead(302, {
+			'Location': url.toString()
+		});
+		response.end();
 	}
 
 }
