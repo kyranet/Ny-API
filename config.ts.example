@@ -7,3 +7,8 @@ export const CLIENT_OPTIONS: DashboardClientOptions = {
 	clientSecret: '',
 	dashboardHooks: { port: 8282, apiPrefix: '' }
 };
+
+export const OAUTH2_OPTIONS: OAuth2Options = {
+	redirectUris: 'http://localhost:8282/oauth/callback',
+	scopes: ['identify', 'guilds']
+};

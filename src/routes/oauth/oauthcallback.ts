@@ -4,7 +4,7 @@ import { URL } from 'url';
 import { APIClient } from '../../lib/APIClient';
 import { DashboardClient, encrypt, KlasaIncomingMessage, RESPONSES, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
 
-import {OAUTH2_OPTIONS} from "./../../../config";
+import { OAUTH2_OPTIONS } from './../../../config';
 
 export default class extends Route {
 
@@ -19,30 +19,27 @@ export default class extends Route {
 	}
 
 	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
-		if (!request.query.code || typeof request.query.code !== "string") {
+		if (!request.query.code || typeof request.query.code !== 'string') {
 			this.noCode(response);
 			return;
 		}
-		
+
 		const url = new URL('https://discordapp.com/api/oauth2/token');
-		
+
 		url.searchParams.append('client_id', this.client.options.clientID);
 		url.searchParams.append('client_secret', this.client.options.clientSecret);
 		url.searchParams.append('grant_type', 'authorization_code');
 		url.searchParams.append('redirect_uri', OAUTH2_OPTIONS.redirectUris);
 		url.searchParams.append('code', request.query.code);
-		url.searchParams.append('scope', OAUTH2_OPTIONS.scopes.join(" "));
-		
-		const res = await fetch(url as any, {
-			method: 'POST'
-		});
+		url.searchParams.append('scope', OAUTH2_OPTIONS.scopes.join(' '));
+
+		const res = await fetch(url as any, { method: 'POST' });
 		if (!res.ok) {
 			response.end(RESPONSES.FETCHING_TOKEN);
 			return;
 		}
 
 		const oauthUser = this.oauthUser;
-
 		if (!oauthUser) {
 			this.notReady(response);
 			return;
