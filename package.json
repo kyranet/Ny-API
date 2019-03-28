@@ -36,7 +36,7 @@
   },
   "homepage": "https://github.com/kyranet/Ny-API#readme",
   "dependencies": {
-    "fs-nextra": "^0.4.2",
+    "fs-nextra": "^0.4.5",
     "node-fetch": "^2.3.0",
     "veza": "^0.4.0"
   },
