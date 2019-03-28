@@ -104,11 +104,8 @@ export class Server {
 	 */
 	public listen(port: number): Promise<void> {
 		this.server.on('request', this.handler.bind(this));
-		return new Promise((res, rej) => {
-			this.server.listen(port, (err) => {
-				if (err) rej(err);
-				else res();
-			});
+		return new Promise((resolve) => {
+			this.server.listen(port, resolve);
 		});
 	}
 
