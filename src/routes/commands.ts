@@ -8,7 +8,7 @@ export default class extends Route {
 	public client: APIClient;
 
 	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string) {
-		super(client, store, file, directory, { route: '/invite' });
+		super(client, store, file, directory, { route: '/commands' });
 	}
 
 	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
