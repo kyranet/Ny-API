@@ -45,6 +45,6 @@
     "@types/node-fetch": "^2.3.6",
     "eslint-config-klasa": "github:dirigeants/klasa-lint",
     "tslint": "^5.16.0",
-    "typescript": "^3.5.1"
+    "typescript": "^3.5.2"
   }
 }
