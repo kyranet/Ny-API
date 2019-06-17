@@ -272,10 +272,10 @@ typescript@^3.5.2:
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.5.2.tgz#a09e1dc69bc9551cadf17dba10ee42cf55e5d56c"
   integrity sha512-7KxJovlYhTX5RaRbUdkAXN1KUZ8PwWlTzQdHV6xNqvuFOs7+WBo10TQUqT19Q/Jz2hk5v9TQDIhyLhhJY4p5AA==
 
-veza@^0.5.0:
-  version "0.5.0"
-  resolved "https://registry.yarnpkg.com/veza/-/veza-0.5.0.tgz#b66e33fda83aac5490d6e25d5e036f870cbf166a"
-  integrity sha512-KyPotWWG4GIm9nZnBDA43vHf/s2tJIJJTyGSI7Dw6xu/gLoDohSzWbFM04B9a+5XR8+UrXMicsS3WoaSGwKJHA==
+veza@^0.5.1:
+  version "0.5.1"
+  resolved "https://registry.yarnpkg.com/veza/-/veza-0.5.1.tgz#a4f326b7ec8326b3c0ef37c222cb0ce2d1ff4a77"
+  integrity sha512-MrqMS+z9YAIw6lb6GK+kus9SpWWuwEymVwhlbbko5o5rMHS9myRmqgAYL1JqmHVm4QONDXVQx4TRXrJfYSLllQ==
 
 wrappy@1:
   version "1.0.2"
