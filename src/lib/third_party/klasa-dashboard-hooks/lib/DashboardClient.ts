@@ -13,7 +13,7 @@ import { OPTIONS } from './util/constants';
 /**
  * The options for Klasa-Dashboard-Hooks
  */
-export type KlasaDashboardHooksOptions = {
+export interface KlasaDashboardHooksOptions {
 	/**
 	 * The route prefix for the api
 	 */
@@ -34,7 +34,7 @@ export type KlasaDashboardHooksOptions = {
 	 * The SSL options
 	 */
 	sslOptions?: SecureContextOptions;
-};
+}
 
 /**
  * The DashboardClient options
@@ -48,7 +48,7 @@ export type DashboardClientOptions = ClientOptions & {
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 export class DashboardClient extends Client {
 
-	public options: Required<DashboardClientOptions>;
+	public options!: Required<DashboardClientOptions>;
 
 	/**
 	 * The http server handler for the api
@@ -68,7 +68,7 @@ export class DashboardClient extends Client {
 	/**
 	 * The cache where oauth data is temporarily stored
 	 */
-	public dashboardUsers: DataStore<string, DashboardUser, typeof DashboardUser> = new DataStore(this, undefined, DashboardUser);
+	public dashboardUsers: DataStore<string, DashboardUser, typeof DashboardUser> = new DataStore(this, [], DashboardUser);
 
 	public constructor(options?: DashboardClientOptions) {
 		super(mergeDefault(OPTIONS, options));
@@ -77,8 +77,8 @@ export class DashboardClient extends Client {
 			.registerStore(this.routes)
 			.registerStore(this.middlewares);
 
-		this.server.listen(this.options.dashboardHooks.port)
-			.catch((error) => { this.console.error(error); });
+		this.server.listen(this.options.dashboardHooks.port!)
+			.catch(error => { this.console.error(error); });
 	}
 
 }

@@ -1,11 +1,11 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { TIMES } from './constants';
-const { SECOND, MINUTE, DAY, DAYS, MONTHS, TIMESTAMP: {TOKENS} } = TIMES;
+const { SECOND, MINUTE, DAY, DAYS, MONTHS, TIMESTAMP: { TOKENS } } = TIMES;
 
 /**
  * The internal timestamp object for the pattern
  */
-type TimestampObject = {
+interface TimestampObject {
 	/**
 	 * The type of this object, if any
 	 */
@@ -13,8 +13,10 @@ type TimestampObject = {
 	/**
 	 * The content of this object
 	 */
-	content?: string;
-};
+	content?: string | null;
+}
+
+export const timezoneOffset = new Date().getTimezoneOffset() * 60000;
 
 export class Timestamp {
 
@@ -97,7 +99,8 @@ export class Timestamp {
 	private static _display(template: TimestampObject[], time: Date | number | string): string {
 		let output = '';
 		const parsedTime = Timestamp._resolveDate(time);
-		for (const { content, type } of template) output += content || resolvers.get(type)(parsedTime);
+		// eslint-disable-next-line @typescript-eslint/no-use-before-define
+		for (const { content, type } of template) output += content || resolvers.get(type)!(parsedTime);
 		return output;
 	}
 
@@ -106,7 +109,7 @@ export class Timestamp {
 	 * @param pattern The pattern to parse
 	 */
 	private static _patch(pattern: string): TimestampObject[] {
-		const template = [];
+		const template: TimestampObject[] = [];
 		for (let i = 0; i < pattern.length; i++) {
 			let current = '';
 			const currentChar = pattern[i];
@@ -138,71 +141,69 @@ export class Timestamp {
 
 }
 
-export const timezoneOffset = new Date().getTimezoneOffset() * 60000;
-
 // Dates
 
-export const Y = (time) => String(time.getFullYear()).slice(0, 2);
+export const Y = (time: Date) => String(time.getFullYear()).slice(0, 2);
 export const YY = Y;
-export const YYY = (time) => String(time.getFullYear());
+export const YYY = (time: Date) => String(time.getFullYear());
 export const YYYY = YYY;
-export const Q = (time) => String((time.getMonth() + 1) / 3);
-export const M = (time) => String(time.getMonth() + 1);
-export const MM = (time) => String(time.getMonth() + 1).padStart(2, '0');
-export const MMM = (time) => MONTHS[time.getMonth()];
+export const Q = (time: Date) => String((time.getMonth() + 1) / 3);
+export const M = (time: Date) => String(time.getMonth() + 1);
+export const MM = (time: Date) => String(time.getMonth() + 1).padStart(2, '0');
+export const MMM = (time: Date) => MONTHS[time.getMonth()];
 export const MMMM = MMM;
-export const D = (time) => String(time.getDate());
-export const DD = (time) => String(time.getDate()).padStart(2, '0');
-export const DDD = (time) => {
+export const D = (time: Date) => String(time.getDate());
+export const DD = (time: Date) => String(time.getDate()).padStart(2, '0');
+export const DDD = (time: Date) => {
 	const start = new Date(time.getFullYear(), 0, 0);
 	const diff = ((time.getMilliseconds() - start.getMilliseconds()) + (start.getTimezoneOffset() - time.getTimezoneOffset())) * MINUTE;
 	return String(Math.floor(diff / DAY));
 };
 export const DDDD = DDD;
-export const d = (time) => {
+export const d = (time: Date) => {
 	const day = String(time.getDate());
 	if (day !== '11' && day.endsWith('1')) return `${day}st`;
 	if (day !== '12' && day.endsWith('2')) return `${day}nd`;
 	if (day !== '13' && day.endsWith('3')) return `${day}rd`;
 	return `${day}th`;
 };
-export const dd = (time) => DAYS[time.getDay()].slice(0, 2);
-export const ddd = (time) => DAYS[time.getDay()].slice(0, 3);
-export const dddd = (time) => DAYS[time.getDay()];
-export const X = (time) => String(time.valueOf() / SECOND);
-export const x = (time) => String(time.valueOf());
+export const dd = (time: Date) => DAYS[time.getDay()].slice(0, 2);
+export const ddd = (time: Date) => DAYS[time.getDay()].slice(0, 3);
+export const dddd = (time: Date) => DAYS[time.getDay()];
+export const X = (time: Date) => String(time.valueOf() / SECOND);
+export const x = (time: Date) => String(time.valueOf());
 
 // Times
 
-export const H = (time) => String(time.getHours());
-export const HH = (time) => String(time.getHours()).padStart(2, '0');
-export const h = (time) => String(time.getHours() % 12);
-export const hh = (time) => String(time.getHours() % 12).padStart(2, '0');
-export const a = (time) => time.getHours() < 12 ? 'am' : 'pm';
-export const A = (time) => time.getHours() < 12 ? 'AM' : 'PM';
-export const m = (time) => String(time.getMinutes());
-export const mm = (time) => String(time.getMinutes()).padStart(2, '0');
-export const s = (time) => String(time.getSeconds());
-export const ss = (time) => String(time.getSeconds()).padStart(2, '0');
-export const S = (time) => String(time.getMilliseconds());
-export const SS = (time) => String(time.getMilliseconds()).padStart(2, '0');
-export const SSS = (time) => String(time.getMilliseconds()).padStart(3, '0');
+export const H = (time: Date) => String(time.getHours());
+export const HH = (time: Date) => String(time.getHours()).padStart(2, '0');
+export const h = (time: Date) => String(time.getHours() % 12);
+export const hh = (time: Date) => String(time.getHours() % 12).padStart(2, '0');
+export const a = (time: Date) => time.getHours() < 12 ? 'am' : 'pm';
+export const A = (time: Date) => time.getHours() < 12 ? 'AM' : 'PM';
+export const m = (time: Date) => String(time.getMinutes());
+export const mm = (time: Date) => String(time.getMinutes()).padStart(2, '0');
+export const s = (time: Date) => String(time.getSeconds());
+export const ss = (time: Date) => String(time.getSeconds()).padStart(2, '0');
+export const S = (time: Date) => String(time.getMilliseconds());
+export const SS = (time: Date) => String(time.getMilliseconds()).padStart(2, '0');
+export const SSS = (time: Date) => String(time.getMilliseconds()).padStart(3, '0');
 
 // Locales
 
 /* eslint max-len:0 new-cap:0 */
 
-export const T = (time) => `${h(time)}:${mm(time)} ${A(time)}`;
-export const t = (time) => `${h(time)}:${mm(time)}:${ss(time)} ${A(time)}`;
-export const L = (time) => `${MM(time)}/${DD(time)}/${YYYY(time)}`;
-export const l = (time) => `${M(time)}/${DD(time)}/${YYYY(time)}`;
-export const LL = (time) => `${MMMM(time)} ${DD(time)}, ${YYYY(time)}`;
-export const ll = (time) => `${MMMM(time).slice(0, 3)} ${DD(time)}, ${YYYY(time)}`;
-export const LLL = (time) => `${LL(time)} ${T(time)}`;
-export const lll = (time) => `${ll(time)} ${T(time)}`;
-export const LLLL = (time) => `${dddd(time)}, ${LLL(time)}`;
-export const llll = (time) => `${ddd(time)} ${lll(time)}`;
-export const Z = (time) => {
+export const T = (time: Date) => `${h(time)}:${mm(time)} ${A(time)}`;
+export const t = (time: Date) => `${h(time)}:${mm(time)}:${ss(time)} ${A(time)}`;
+export const L = (time: Date) => `${MM(time)}/${DD(time)}/${YYYY(time)}`;
+export const l = (time: Date) => `${M(time)}/${DD(time)}/${YYYY(time)}`;
+export const LL = (time: Date) => `${MMMM(time)} ${DD(time)}, ${YYYY(time)}`;
+export const ll = (time: Date) => `${MMMM(time).slice(0, 3)} ${DD(time)}, ${YYYY(time)}`;
+export const LLL = (time: Date) => `${LL(time)} ${T(time)}`;
+export const lll = (time: Date) => `${ll(time)} ${T(time)}`;
+export const LLLL = (time: Date) => `${dddd(time)}, ${LLL(time)}`;
+export const llll = (time: Date) => `${ddd(time)} ${lll(time)}`;
+export const Z = (time: Date) => {
 	const offset = time.getTimezoneOffset();
 	return `${offset >= 0 ? '+' : '-'}${String(offset / -60).padStart(2, '0')}:${String(offset % 60).padStart(2, '0')}`;
 };

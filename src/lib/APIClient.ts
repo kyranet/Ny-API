@@ -8,12 +8,13 @@ const y = new Colors({ text: ConsoleTexts.yellow }).format('[IPC   ]');
 const r = new Colors({ text: ConsoleTexts.red }).format('[IPC   ]');
 
 export class APIClient extends DashboardClient {
+
 	public ipcMonitors = new IPCMonitorStore(this);
 	public ipc = new Node('ny-api')
-		.on('client.identify', (client) => { this.console.log(`${g} Client Connected: ${client.name}`); })
-		.on('client.disconnect', (client) => { this.console.log(`${y} Client Disconnected: ${client.name}`); })
-		.on('client.destroy', (client) => { this.console.log(`${y} Client Destroyed: ${client.name}`); })
-		.on('server.ready', (server) => { this.console.log(`${g} Client Ready: Named ${server.name}`); })
+		.on('client.identify', client => { this.console.log(`${g} Client Connected: ${client.name}`); })
+		.on('client.disconnect', client => { this.console.log(`${y} Client Disconnected: ${client.name}`); })
+		.on('client.destroy', client => { this.console.log(`${y} Client Destroyed: ${client.name}`); })
+		.on('server.ready', server => { this.console.log(`${g} Client Ready: Named ${server.name}`); })
 		.on('error', (error, client) => { this.console.error(`${r} Error from ${client.name}`, error); })
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
@@ -23,9 +24,9 @@ export class APIClient extends DashboardClient {
 	}
 
 	public async ipcRequest<T>(socket: Sockets, body: [string, any?], receptive: boolean = true): Promise<T> {
-		const [success, data] = await this.ipc.sendTo<[boolean, T]>(socket, body, { receptive, timeout: 10000 });
+		const [success, data] = await this.ipc.sendTo(socket, body, { receptive, timeout: 10000 }) as [boolean, T];
 		if (success) return data;
-		else throw data;
+		throw data;
 	}
 
 	public broadcastRequest<T>(data: [string, any?], receptive: boolean = true): Promise<T[]> {

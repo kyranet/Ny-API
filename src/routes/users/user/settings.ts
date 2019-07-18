@@ -1,14 +1,16 @@
 import { ServerResponse } from 'http';
 import { inspect } from 'util';
 import { APIClient, Sockets } from '../../../lib/APIClient';
-import { DashboardClient, KlasaIncomingMessage, Route, RouteStore } from '../../../lib/third_party/klasa-dashboard-hooks';
+import { KlasaIncomingMessage, Route, RouteStore } from '../../../lib/third_party/klasa-dashboard-hooks';
+
+const denied = JSON.stringify({ success: false, data: 'DENIED_ACCESS' });
 
 export default class extends Route {
 
-	public client: APIClient;
+	public client!: APIClient;
 
-	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string) {
-		super(client, store, file, directory, { route: '/users/:user/settings', enabled: false });
+	public constructor(store: RouteStore, file: string[], directory: string) {
+		super(store, file, directory, { route: '/users/:user/settings', enabled: false });
 	}
 
 	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
@@ -67,5 +69,3 @@ export default class extends Route {
 
 // const ACTION_TYPES = new Set(['set', 'add', 'remove']);
 // const TYPE_TYPES = new Set(['money', 'points']);
-
-const denied = JSON.stringify({ success: false, data: 'DENIED_ACCESS' });

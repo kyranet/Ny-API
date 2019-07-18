@@ -1,15 +1,12 @@
 import { ServerResponse } from 'http';
 import fetch from 'node-fetch';
 import { URL } from 'url';
-import { APIClient } from '../../lib/APIClient';
-import { DashboardClient, encrypt, KlasaIncomingMessage, RESPONSES, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
+import { encrypt, KlasaIncomingMessage, RESPONSES, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
 
 export default class extends Route {
 
-	public client: APIClient;
-
-	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string) {
-		super(client, store, file, directory, { route: '/oauth/callback', authenticated: true });
+	public constructor(store: RouteStore, file: string[], directory: string) {
+		super(store, file, directory, { route: '/oauth/callback', authenticated: true });
 	}
 
 	public get oauthUser(): Route {
@@ -34,7 +31,7 @@ export default class extends Route {
 			return;
 		}
 
-		const oauthUser = this.oauthUser;
+		const { oauthUser } = this;
 
 		if (!oauthUser) {
 			this.notReady(response);
@@ -46,7 +43,7 @@ export default class extends Route {
 
 		response.end(JSON.stringify({
 			access_token: encrypt({
-				scope: [user.id, ...user.guilds.map((guild) => guild.id)],
+				scope: [user.id, ...user.guilds.map(guild => guild.id)],
 				token: body.access_token
 			}, this.client.options.clientSecret),
 			user

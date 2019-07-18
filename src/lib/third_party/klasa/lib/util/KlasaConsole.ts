@@ -39,18 +39,19 @@ export class KlasaConsole extends Console {
 
 	public constructor(options: KlasaConsoleOptions = {}) {
 		mergeDefault(CONSOLE, options);
-		super(options.stdout, options.stderr);
+		super(options.stdout!, options.stderr!);
 
-		this.stdout = options.stdout;
-		this.stderr = options.stderr;
-		this.template = options.timestamps !== false ? new Timestamp(options.timestamps === true ? 'YYYY-MM-DD HH:mm:ss' : options.timestamps) : null;
-		this.utc = options.utc;
+		this.stdout = options.stdout!;
+		this.stderr = options.stderr!;
+		this.template = options.timestamps ? new Timestamp(options.timestamps === true ? 'YYYY-MM-DD HH:mm:ss' : options.timestamps!) : null;
+		this.utc = options.utc!;
 
-		this.colors = {} as Record<KlasaConsoleTypes, KlasaConsoleColor>;
-		for (const [name, formats] of Object.entries(options.colors)) {
-			this.colors[name] = {};
-			for (const [type, format] of Object.entries(formats)) this.colors[name][type] = new Colors(format);
+		const colors: Partial<Record<KlasaConsoleTypes, KlasaConsoleColor>> = {};
+		for (const [name, formats] of Object.entries(options.colors!)) {
+			colors[name] = {};
+			for (const [type, format] of Object.entries(formats)) colors[name][type] = new Colors(format);
 		}
+		this.colors = colors as Record<KlasaConsoleTypes, KlasaConsoleColor>;
 	}
 
 	/**
@@ -105,7 +106,7 @@ export class KlasaConsole extends Console {
 	 * The timestamp to use
 	 */
 	private get timestamp(): string {
-		return this.utc ? this.template.displayUTC() : this.template.display();
+		return this.utc ? this.template!.displayUTC() : this.template!.display();
 	}
 
 	/**
@@ -117,7 +118,7 @@ export class KlasaConsole extends Console {
 		const flattened = data.map(KlasaConsole._flatten).join('\n');
 		const { time, message } = this.colors[type];
 		const timestamp = this.template ? time.format(`[${this.timestamp}]`) : '';
-		super[CONSOLE.types[type]](flattened.split('\n').map((str) => `${timestamp} ${message.format(str)}`).join('\n'));
+		super[CONSOLE.types![type]](flattened.split('\n').map(str => `${timestamp} ${message.format(str)}`).join('\n'));
 	}
 
 	/**
@@ -129,7 +130,7 @@ export class KlasaConsole extends Console {
 		if (typeof data === 'string') return data;
 		if (typeof data === 'object') {
 			const isArray = Array.isArray(data);
-			if (isArray && data.every((datum) => typeof datum === 'string')) return data.join('\n');
+			if (isArray && data.every(datum => typeof datum === 'string')) return data.join('\n');
 			return data.stack || data.message || inspect(data, { depth: Number(isArray), colors: true });
 		}
 		return String(data);
@@ -145,7 +146,7 @@ export type KlasaConsoleTypes = 'debug' | 'error' | 'log' | 'verbose' | 'warn' |
 /**
  * The klasa console options
  */
-export type KlasaConsoleOptions = {
+export interface KlasaConsoleOptions {
 	/**
 	 * The console color styles
 	 */
@@ -170,7 +171,7 @@ export type KlasaConsoleOptions = {
 	 * Whether the timestamps should be in utc or not
 	 */
 	utc?: boolean;
-};
+}
 
 /**
  * The color styles
@@ -180,7 +181,7 @@ export type KlasaConsoleColorStyles<T extends string> = Record<T, KlasaConsoleCo
 /**
  * The color style for each part
  */
-export type KlasaConsoleColorStyle = {
+export interface KlasaConsoleColorStyle {
 	/**
 	 * The color style for messages
 	 */
@@ -193,12 +194,12 @@ export type KlasaConsoleColorStyle = {
 	 * The color style for shard
 	 */
 	shard?: ColorsFormatOptions;
-};
+}
 
 /**
  * The colors for the console
  */
-type KlasaConsoleColor = {
+interface KlasaConsoleColor {
 	/**
 	 * The Colors instance for the time
 	 */
@@ -211,7 +212,7 @@ type KlasaConsoleColor = {
 	 * The Colors instance for the message
 	 */
 	message: Colors;
-};
+}
 
 /**
  * The supported console methods

@@ -6,11 +6,11 @@ import { DashboardUser } from './DashboardUser';
 /**
  * The dashboard guild data
  */
-export type DashboardGuildData = {
+export interface DashboardGuildData {
 	id: string;
 	name: string;
 	icon: string | null;
-};
+}
 
 export class DashboardGuild {
 
@@ -32,7 +32,7 @@ export class DashboardGuild {
 	/**
 	 * The guild icon hash
 	 */
-	public icon: string;
+	public icon: string | null;
 
 	/**
 	 * The OAuth Users this DashboardGuild is for
@@ -49,7 +49,7 @@ export class DashboardGuild {
 	/**
 	 * The url for the guild's icon
 	 */
-	public get iconURL(): string {
+	public get iconURL() {
 		return this.icon ? `https://cdn.discordapp.com/icons/${this.id}/${this.icon}.png` : null;
 	}
 

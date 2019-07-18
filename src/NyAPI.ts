@@ -5,6 +5,6 @@ inspect.defaultOptions.depth = 1;
 
 const client = new APIClient(CLIENT_OPTIONS);
 client.ipc.serve(9997)
-	.catch((error) => { client.console.error(error); });
+	.catch(error => { client.console.error(error); });
 client.start()
-	.catch((error) => { client.console.error(error); });
+	.catch(error => { client.console.error(error); });

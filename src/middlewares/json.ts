@@ -1,10 +1,10 @@
 import { createGunzip, createInflate, Gunzip, Inflate } from 'zlib';
-import { DashboardClient, KlasaIncomingMessage, Middleware, MiddlewareStore } from '../lib/third_party/klasa-dashboard-hooks';
+import { KlasaIncomingMessage, Middleware, MiddlewareStore } from '../lib/third_party/klasa-dashboard-hooks';
 
 export default class extends Middleware {
 
-	public constructor(client: DashboardClient, store: MiddlewareStore, file: string[], directory: string) {
-		super(client, store, file, directory, { priority: 20 });
+	public constructor(store: MiddlewareStore, file: string[], directory: string) {
+		super(store, file, directory, { priority: 20 });
 	}
 
 	public async run(request: KlasaIncomingMessage): Promise<void> {

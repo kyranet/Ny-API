@@ -16,7 +16,7 @@ export class Stopwatch {
 	/**
 	 * The end time of this stopwatch
 	 */
-	private _end: number = null;
+	private _end: number | null = null;
 
 	/**
 	 * Starts a new Stopwatch

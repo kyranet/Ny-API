@@ -6,6 +6,7 @@ import { Client } from '../../../klasa';
  * Manages the creation, retrieval and deletion of a specific data model.
  */
 export class DataStore<K extends string, V extends { id: K }, C extends new (...args: any[]) => V> extends Collection<K, V> {
+
 	public client: Client;
 	public holds: C;
 	public constructor(client: Client, iterable: Iterable<any>, holds: C) {
@@ -30,7 +31,7 @@ export class DataStore<K extends string, V extends { id: K }, C extends new (...
 	 * Resolves a data entry to a data Object.
 	 * @param idOrInstance The id or instance of something in this DataStore
 	 */
-	public resolve(idOrInstance: K | V): V {
+	public resolve(idOrInstance: K | V) {
 		if (idOrInstance instanceof this.holds) return idOrInstance as V;
 		if (typeof idOrInstance === 'string') return this.get(idOrInstance) || null;
 		return null;
@@ -40,7 +41,7 @@ export class DataStore<K extends string, V extends { id: K }, C extends new (...
 	 * Resolves a data entry to a instance ID.
 	 * @param idOrInstance The id or instance of something in this DataStore
 	 */
-	public resolveID(idOrInstance: K | V): K {
+	public resolveID(idOrInstance: K | V) {
 		if (idOrInstance instanceof this.holds) return (idOrInstance as V).id;
 		if (typeof idOrInstance === 'string') return idOrInstance;
 		return null;
@@ -49,4 +50,5 @@ export class DataStore<K extends string, V extends { id: K }, C extends new (...
 	public static get [Symbol.species](): typeof Collection {
 		return Collection;
 	}
+
 }

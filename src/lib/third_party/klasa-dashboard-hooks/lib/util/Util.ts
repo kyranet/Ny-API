@@ -6,10 +6,10 @@ const [SLASH, COLON] = [47, 58];
 /**
  * The parsed parts
  */
-export type ParsedPart = {
+export interface ParsedPart {
 	val: string;
 	type: number;
-};
+}
 
 /**
  * Parses a url part

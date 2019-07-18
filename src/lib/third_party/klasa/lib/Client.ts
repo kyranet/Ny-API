@@ -11,21 +11,23 @@ import { Stopwatch } from './util/Stopwatch';
 /**
  * The client options
  */
-export type ClientOptions = {
+export interface ClientOptions {
+	clientID?: string;
+	clientSecret?: string;
 	pieceDefaults?: Record<string, PieceOptions>;
 	console?: KlasaConsoleOptions;
-};
+}
 
 export class Client extends EventEmitter {
-	// tslint:disable-next-line no-any
+
 	public options: Required<ClientOptions>;
-	public userBaseDirectory = dirname(require.main.filename);
+	public userBaseDirectory = dirname(require.main!.filename);
 	public console: KlasaConsole;
 	public pieceStores: Collection<string, Store<string, Piece, new (...args: any[]) => Piece>> = new Collection();
 
 	public constructor(options: ClientOptions = {}) {
 		super();
-		this.options = <Required<ClientOptions>> options;
+		this.options = options as Required<ClientOptions>;
 		this.console = new KlasaConsole(options.console);
 	}
 
@@ -52,7 +54,7 @@ export class Client extends EventEmitter {
 	public async start(): Promise<void> {
 		const timer = new Stopwatch();
 		try {
-			const loaded = await Promise.all(this.pieceStores.map(async(store) => `Loaded ${await store.loadAll()} ${store.name}.`));
+			const loaded = await Promise.all(this.pieceStores.map(async store => `Loaded ${await store.loadAll()} ${store.name}.`));
 			this.console.log(loaded.join('\n'));
 			this.console.log(`Loaded in ${timer.stop()}.`);
 		} catch (error) {

@@ -61,12 +61,12 @@ export type KlasaIncomingMessage = {
 /**
  * An error-like object
  */
-type ErrorLike = {
+interface ErrorLike {
 	code: number;
-	status: number;
-	statusCode: number;
-	message: string;
-};
+	status?: number;
+	statusCode?: number;
+	message?: string;
+}
 /**
  * The http server for klasa-dashboard-hooks
  */
@@ -93,9 +93,9 @@ export class Server {
 	public constructor(client: DashboardClient) {
 		const { http2, sslOptions } = client.options.dashboardHooks;
 		this.client = client;
-		this.server = http2 ?
-			createHttp2Server(sslOptions) :
-			sslOptions ? createHttpsServer(sslOptions) : createHttpServer();
+		this.server = http2
+			? createHttp2Server(sslOptions!)
+			: sslOptions ? createHttpsServer(sslOptions) : createHttpServer();
 	}
 
 	/**
@@ -104,7 +104,7 @@ export class Server {
 	 */
 	public listen(port: number): Promise<void> {
 		this.server.on('request', this.handler.bind(this));
-		return new Promise((resolve) => {
+		return new Promise(resolve => {
 			this.server.listen(port, resolve);
 		});
 	}
@@ -115,20 +115,20 @@ export class Server {
 	 * @param response The response
 	 */
 	public async handler(request: IncomingMessage, response: ServerResponse): Promise<void> {
-		const info = parse(request.url, true);
-		const splitURL = split(info.pathname);
+		const info = parse(request.url!, true);
+		const splitURL = split(info.pathname!);
 		const route = this.client.routes.findRoute(request.method as keyof typeof HttpMethods, splitURL);
 
-		const klasaRequest = <KlasaIncomingMessage> request;
+		const klasaRequest = request as KlasaIncomingMessage;
 		if (route) klasaRequest.params = route.execute(splitURL);
-		klasaRequest.originalUrl = klasaRequest.originalUrl || request.url;
-		klasaRequest.path = info.pathname;
-		klasaRequest.search = info.search;
+		klasaRequest.originalUrl = klasaRequest.originalUrl || request.url!;
+		klasaRequest.path = info.pathname!;
+		klasaRequest.search = info.search!;
 		klasaRequest.query = info.query;
 
 		try {
-			await this.client.middlewares.run(klasaRequest, response, route);
-			await (route ? route[METHODS_LOWER[request.method]](request, response) : this.onNoMatch(request, response));
+			await this.client.middlewares.run(klasaRequest, response, route!);
+			await (route ? route[METHODS_LOWER[request.method!]](request, response) : this.onNoMatch(klasaRequest, response));
 		} catch (err) {
 			this.client.console.error(err);
 			this.onError(err, klasaRequest, response);
@@ -142,8 +142,8 @@ export class Server {
 	 * @param response The response
 	 */
 	public onError(error: ErrorLike, _: KlasaIncomingMessage, response: ServerResponse): void {
-		const code = response.statusCode = error.code || error.status || error.statusCode || 500;
-		response.end(error.message || STATUS_CODES[code]);
+		response.statusCode = error.code || error.status || error.statusCode || 500;
+		response.end(error.message || STATUS_CODES[response.statusCode]);
 	}
 
 }

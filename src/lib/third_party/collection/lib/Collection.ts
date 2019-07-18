@@ -5,13 +5,13 @@ export class Collection<K, V> extends Map<K, V> {
 	 * Cached array for the `array()` method - will be reset to `null` whenever
 	 * `set()` or `delete()` are called
 	 */
-	private _array: V[] = null;
+	private _array: V[] | null = null;
 
 	/**
 	 * Cached array for the `keyArray()` method - will be reset to `null`
 	 * whenever `set()` or `delete()` are called
 	 */
-	private _keyArray: K[] = null;
+	private _keyArray: K[] | null = null;
 
 	public set(key: K, val: V): this {
 		this._array = null;
@@ -136,7 +136,7 @@ export class Collection<K, V> extends Map<K, V> {
 		if (arr.length === 0 || !amount) return [];
 		const rand = new Array(amount);
 		arr = arr.slice();
-		for (let i = 0; i < amount; i++) rand[i] = arr.splice(Math.floor(Math.random() * arr.length), 1)[0];
+		for (let i = 0; i < amount; i++) [rand[i]] = arr.splice(Math.floor(Math.random() * arr.length), 1);
 		return rand;
 	}
 
@@ -155,7 +155,7 @@ export class Collection<K, V> extends Map<K, V> {
 		if (arr.length === 0 || !amount) return [];
 		const rand = new Array(amount);
 		arr = arr.slice();
-		for (let i = 0; i < amount; i++) rand[i] = arr.splice(Math.floor(Math.random() * arr.length), 1)[0];
+		for (let i = 0; i < amount; i++) [rand[i]] = arr.splice(Math.floor(Math.random() * arr.length), 1);
 		return rand;
 	}
 
@@ -292,33 +292,6 @@ export class Collection<K, V> extends Map<K, V> {
 	}
 
 	/**
-	 * Applies a function to produce a single value. Identical in behavior to
-	 * [Array.reduce()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/reduce).
-	 * @param fn Function used to reduce, taking four arguments; `accumulator`, `currentValue`, `currentKey`,
-	 * and `collection`
-	 * @param initialValue Starting value for the accumulator
-	 * @example collection.reduce((acc, guild) => acc + guild.memberCount, 0);
-	 */
-	public reduce<T>(fn: (accumulator: T, value: V, key: K, collection: this) => T, initialValue: T): T {
-		let accumulator;
-		if (typeof initialValue !== 'undefined') {
-			accumulator = initialValue;
-			for (const [key, val] of this) accumulator = fn(accumulator, val, key, this);
-		} else {
-			let first = true;
-			for (const [key, val] of this) {
-				if (first) {
-					accumulator = val;
-					first = false;
-					continue;
-				}
-				accumulator = fn(accumulator, val, key, this);
-			}
-		}
-		return accumulator;
-	}
-
-	/**
 	 * Identical to
 	 * [Map.forEach()](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map/forEach),
 	 * but returns the collection instead of undefined.
@@ -330,7 +303,7 @@ export class Collection<K, V> extends Map<K, V> {
 	 *  .filter(user => user.bot)
 	 *  .each(user => console.log(user.username));
 	 */
-	public each(fn: (value: V, key: K, collection: this) => boolean, thisArg?: any): this {
+	public each(fn: (value: V, key: K, collection: Map<K, V>) => boolean, thisArg?: any): this {
 		this.forEach(fn, thisArg);
 		return this;
 	}
@@ -396,7 +369,7 @@ export class Collection<K, V> extends Map<K, V> {
 	 * according to the string conversion of each element.
 	 * @example collection.sort((userA, userB) => userA.createdTimestamp - userB.createdTimestamp);
 	 */
-	public sort(compareFunction: (vx: V, vy: V, kx: K, ky: K) => number = (x: V, y: V) => +(x > y) || +(x === y) - 1): Collection<K, V> {
+	public sort(compareFunction: (vx: V, vy: V, kx: K, ky: K) => number = (x: V, y: V) => Number(x > y) || Number(x === y) - 1): Collection<K, V> {
 		return new this.constructor[Symbol.species]([...this.entries()]
 			.sort((a, b) => compareFunction(a[1], b[1], a[0], b[0])));
 	}

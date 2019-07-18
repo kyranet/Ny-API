@@ -6,15 +6,15 @@ import { DashboardGuild, DashboardGuildData } from './DashboardGuild';
 /**
  * The dashboard user data
  */
-export type DashboardUserData = {
-	avatar: string;
+export interface DashboardUserData {
+	avatar: string | null;
 	discriminator: number;
 	guilds: DashboardGuildData[];
 	id: string;
-	locale: string;
+	locale: string | null;
 	mfaEnabled: boolean;
 	username: string;
-};
+}
 
 export class DashboardUser {
 
@@ -46,7 +46,7 @@ export class DashboardUser {
 	/**
 	 * The language of the OAuth User
 	 */
-	public locale: string;
+	public locale: string | null;
 
 	/**
 	 * If the OAuth User has multi-factor Authentication enabled
@@ -58,6 +58,64 @@ export class DashboardUser {
 	 */
 	public username: string;
 
+	public constructor(client: DashboardClient, user: any) {
+		/**
+		 * The DashboardClient
+		 * @since 0.0.1
+		 * @type {DashboardClient}
+		 */
+		this.client = client;
+
+		/**
+		 * The id of the OAuth User
+		 * @since 0.0.1
+		 * @type {string}
+		 */
+		this.id = user.id;
+
+		/**
+		 * The username of the OAuth User
+		 * @since 0.0.1
+		 * @type {string}
+		 */
+		this.username = user.username;
+
+		/**
+		 * The discriminator of the OAuth User
+		 * @since 0.0.1
+		 * @type {number}
+		 */
+		this.discriminator = parseInt(user.discriminator, 10);
+
+		/**
+		 * The language of the OAuth User
+		 * @since 0.0.1
+		 * @type {string}
+		 */
+		this.locale = user.locale;
+
+		/**
+		 * If the OAuth User has multi-factor Authentication enabled
+		 * @since 0.0.1
+		 * @type {boolean}
+		 */
+		this.mfaEnabled = user.mfa_enabled;
+
+		/**
+		 * The OAuth User's avatar hash
+		 * @since 0.0.1
+		 * @type {string}
+		 */
+		this.avatar = user.avatar;
+
+		/**
+		 * The collection of OAuth Guilds this OAuth User is in
+		 * @since 0.0.1
+		 * @type {external:Collection<external:snowflake, DashboardGuild>}
+		 */
+		this.guilds = new Collection();
+	}
+
 	public avatarURL(): string {
 		return this.avatar
 			? `https://cdn.discordapp.com/avatars/${this.id}/${this.avatar}.png`
@@ -68,11 +126,12 @@ export class DashboardUser {
 		return {
 			avatar: this.avatar,
 			discriminator: this.discriminator,
-			guilds: [...this.guilds.values()].map((guild) => guild.toJSON()),
+			guilds: [...this.guilds.values()].map(guild => guild.toJSON()),
 			id: this.id,
 			locale: this.locale,
 			mfaEnabled: this.mfaEnabled,
-			username: this.username,
+			username: this.username
 		};
 	}
+
 }

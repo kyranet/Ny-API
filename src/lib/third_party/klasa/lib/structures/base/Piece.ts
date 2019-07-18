@@ -28,11 +28,6 @@ export class Piece {
 	public directory: string;
 
 	/**
-	 * The options for this piece
-	 */
-	public options: Required<PieceOptions>;
-
-	/**
 	 * The name of the Piece
 	 */
 	public name: string;
@@ -42,14 +37,14 @@ export class Piece {
 	 */
 	public enabled: boolean;
 
-	public constructor(client: Client, store: Store<string, Piece, ConstructorType<Piece>>, file: string[], directory: string, options: PieceOptions = {}) {
-		const defaults = client.options.pieceDefaults[store.name];
+	public constructor(store: Store<string, Piece, ConstructorType<Piece>>, file: string[], directory: string, options: PieceOptions = {}) {
+		const defaults = store.client.options.pieceDefaults[store.name];
 		if (defaults) options = mergeDefault(defaults, options);
 
-		this.client = client;
+		this.client = store.client;
 		this.file = file;
 		this.name = options.name || file[file.length - 1].slice(0, -3);
-		this.enabled = options.enabled;
+		this.enabled = options.enabled!;
 		this.store = store;
 		this.directory = directory;
 	}
@@ -139,7 +134,7 @@ export class Piece {
 /**
  * The piece options
  */
-export type PieceOptions = {
+export interface PieceOptions {
 	/**
 	 * The name of the piece
 	 */
@@ -148,7 +143,7 @@ export type PieceOptions = {
 	 * Whether the piece is enabled or not
 	 */
 	enabled?: boolean;
-};
+}
 
 /**
  * The result of a piece to JSON

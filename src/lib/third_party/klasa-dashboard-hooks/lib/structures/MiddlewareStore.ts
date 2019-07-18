@@ -30,10 +30,10 @@ export class MiddlewareStore extends Store<string, Middleware, ConstructorType<M
 	 * Adds a Middleware to this MiddlewareStore
 	 * @param piece The Middleware to add to this store
 	 */
-	public set(piece: Middleware): Middleware {
+	public set(piece: Middleware): Middleware | null {
 		const middleware = super.set(piece);
 		if (!middleware) return middleware;
-		const index = this.sortedMiddlewares.findIndex((mid) => mid.priority >= middleware.priority);
+		const index = this.sortedMiddlewares.findIndex(mid => mid.priority >= middleware.priority);
 		this.sortedMiddlewares.splice(index === -1 ? 0 : index, 0, middleware);
 		return middleware;
 	}

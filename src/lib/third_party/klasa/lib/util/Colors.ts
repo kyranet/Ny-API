@@ -1,4 +1,82 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
+/**
+ * The close codes
+ */
+export enum ConsoleClose {
+	normal = 0,
+	bold = 22,
+	dim = 22,
+	italic = 23,
+	underline = 24,
+	inverse = 27,
+	hidden = 28,
+	strikethrough = 29,
+	text = 39,
+	background = 49
+}
+
+/**
+ * The style codes
+ */
+export enum ConsoleStyles {
+	normal = 0,
+	bold = 1,
+	dim = 2,
+	italic = 3,
+	underline = 4,
+	inverse = 7,
+	hidden = 8,
+	strikethrough = 9
+}
+
+/**
+ * The text codes
+ */
+export enum ConsoleTexts {
+	black = 30,
+	red = 31,
+	green = 32,
+	yellow = 33,
+	blue = 34,
+	magenta = 35,
+	cyan = 36,
+	gray = 90,
+	grey = 90,
+	lightblue = 94,
+	lightcyan = 96,
+	lightgreen = 92,
+	lightgray = 37,
+	lightgrey = 37,
+	lightmagenta = 95,
+	lightred = 91,
+	lightyellow = 93,
+	white = 97
+}
+
+/**
+ * The background codes
+ */
+export enum ConsoleBackgrounds {
+	black = 40,
+	red = 41,
+	green = 42,
+	yellow = 43,
+	blue = 44,
+	magenta = 45,
+	cyan = 46,
+	gray = 47,
+	grey = 47,
+	lightblue = 104,
+	lightcyan = 106,
+	lightgreen = 102,
+	lightgray = 100,
+	lightgrey = 100,
+	lightmagenta = 105,
+	lightred = 101,
+	lightyellow = 103,
+	white = 107
+}
+
 export class Colors {
 
 	/**
@@ -13,8 +91,8 @@ export class Colors {
 
 	public constructor(options: ColorsFormatOptions = {}) {
 		const { opening, closing } = Colors.text(options.text, Colors.background(options.background, Colors.style(options.style)));
-		this.opening = `\u001B[${opening.join(';')}m`;
-		this.closing = `\u001B[${closing.join(';')}m`;
+		this.opening = `\u001B[${opening!.join(';')}m`;
+		this.closing = `\u001B[${closing!.join(';')}m`;
 	}
 
 	/**
@@ -74,7 +152,7 @@ export class Colors {
 /**
  * The color format options
  */
-export type ColorsFormatOptions = {
+export interface ColorsFormatOptions {
 	/**
 	 * The style or styles to apply
 	 */
@@ -87,12 +165,12 @@ export type ColorsFormatOptions = {
 	 * The format for the text
 	 */
 	text?: ConsoleTexts;
-};
+}
 
 /**
  * The format data used during parsing
  */
-type ColorsFormatData = {
+interface ColorsFormatData {
 	/**
 	 * The opening format data styles
 	 */
@@ -101,244 +179,4 @@ type ColorsFormatData = {
 	 * The closing format data styles
 	 */
 	closing?: number[];
-};
-
-/**
- * The close codes
- */
-export enum ConsoleClose {
-	/**
-	 * Default style
-	 */
-	normal = 0,
-	/**
-	 * Bold style. May appear with a lighter colour in many terminals
-	 */
-	bold = 22,
-	/**
-	 * Dim style
-	 */
-	dim = 22,
-	/**
-	 * Italic style
-	 */
-	italic = 23,
-	/**
-	 * Underline style
-	 */
-	underline = 24,
-	/**
-	 * Inverse colours style
-	 */
-	inverse = 27,
-	/**
-	 * Hidden text style
-	 */
-	hidden = 28,
-	/**
-	 * Strikethrough text style
-	 */
-	strikethrough = 29,
-	/**
-	 * The text closing code
-	 */
-	text = 39,
-	/**
-	 * The background closing code
-	 */
-	background = 49
-}
-
-/**
- * The style codes
- */
-export enum ConsoleStyles {
-	/**
-	 * Default style
-	 */
-	normal = 0,
-	/**
-	 * Bold style. May appear with a lighter colour in many terminals
-	 */
-	bold = 1,
-	/**
-	 * Dim style
-	 */
-	dim = 2,
-	/**
-	 * Italic style
-	 */
-	italic = 3,
-	/**
-	 * Underline style
-	 */
-	underline = 4,
-	/**
-	 * Inverse colours style
-	 */
-	inverse = 7,
-	/**
-	 * Hidden text style
-	 */
-	hidden = 8,
-	/**
-	 * Strikethrough text style
-	 */
-	strikethrough = 9
-}
-
-/**
- * The text codes
- */
-export enum ConsoleTexts {
-	/**
-	 * The black color
-	 */
-	black = 30,
-	/**
-	 * The red color
-	 */
-	red = 31,
-	/**
-	 * The green color
-	 */
-	green = 32,
-	/**
-	 * The yellow color
-	 */
-	yellow = 33,
-	/**
-	 * The blue color
-	 */
-	blue = 34,
-	/**
-	 * The magenta color
-	 */
-	magenta = 35,
-	/**
-	 * The cyan color
-	 */
-	cyan = 36,
-	/**
-	 * The gray color
-	 */
-	gray = 90,
-	/**
-	 * The grey color
-	 */
-	grey = 90,
-	/**
-	 * The light blue color
-	 */
-	lightblue = 94,
-	/**
-	 * The light cyan color
-	 */
-	lightcyan = 96,
-	/**
-	 * The light green color
-	 */
-	lightgreen = 92,
-	/**
-	 * The light grey color
-	 */
-	lightgray = 37,
-	/**
-	 * The light grey color
-	 */
-	lightgrey = 37,
-	/**
-	 * The light magenta color
-	 */
-	lightmagenta = 95,
-	/**
-	 * The light red color
-	 */
-	lightred = 91,
-	/**
-	 * The light yellow color
-	 */
-	lightyellow = 93,
-	/**
-	 * The white color
-	 */
-	white = 97
-}
-
-/**
- * The background codes
- */
-export enum ConsoleBackgrounds {
-	/**
-	 * The black color
-	 */
-	black = 40,
-	/**
-	 * The red color
-	 */
-	red = 41,
-	/**
-	 * The green color
-	 */
-	green = 42,
-	/**
-	 * The yellow color
-	 */
-	yellow = 43,
-	/**
-	 * The blue color
-	 */
-	blue = 44,
-	/**
-	 * The magenta color
-	 */
-	magenta = 45,
-	/**
-	 * The cyan color
-	 */
-	cyan = 46,
-	/**
-	 * The gray color
-	 */
-	gray = 47,
-	/**
-	 * The grey color
-	 */
-	grey = 47,
-	/**
-	 * The light blue color
-	 */
-	lightblue = 104,
-	/**
-	 * The light cyan color
-	 */
-	lightcyan = 106,
-	/**
-	 * The light green color
-	 */
-	lightgreen = 102,
-	/**
-	 * The light grey color
-	 */
-	lightgray = 100,
-	/**
-	 * The light grey color
-	 */
-	lightgrey = 100,
-	/**
-	 * The light magenta color
-	 */
-	lightmagenta = 105,
-	/**
-	 * The light red color
-	 */
-	lightred = 101,
-	/**
-	 * The light yellow color
-	 */
-	lightyellow = 103,
-	/**
-	 * The white color
-	 */
-	white = 107
 }

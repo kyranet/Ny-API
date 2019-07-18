@@ -2,19 +2,22 @@ import { ServerResponse } from 'http';
 import { inspect } from 'util';
 import { B4D_TOKEN } from '../../../config';
 import { APIClient, Sockets } from '../../lib/APIClient';
-import { DashboardClient, KlasaIncomingMessage, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
+import { KlasaIncomingMessage, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
+
+const invalidAuthorization = JSON.stringify({ success: false, data: 'INVALID_AUTHORIZATION' });
+const reply = JSON.stringify({ success: true, data: 'OK' });
 
 export default class extends Route {
 
-	public client: APIClient;
+	public client!: APIClient;
 
-	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string) {
-		super(client, store, file, directory, { route: '/webhooks/b4d' });
+	public constructor(store: RouteStore, file: string[], directory: string) {
+		super(store, file, directory, { route: '/webhooks/b4d' });
 	}
 
 	public async post(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
 		if (request.headers.authorization === B4D_TOKEN) {
-			const body: WebhookBody = request.body;
+			const { body } = request;
 			if (body.type === 'vote') {
 				try {
 					await this.client.ipcRequest(Sockets.Skyra, ['webhook', { ...body, from: 'b4d' }]);
@@ -28,27 +31,8 @@ export default class extends Route {
 			response.end(reply);
 		} else {
 			response.writeHead(403);
-			response.end(error);
+			response.end(invalidAuthorization);
 		}
 	}
 
 }
-
-const error = JSON.stringify({ success: false, data: 'INVALID_AUTHORIZATION' });
-const reply = JSON.stringify({ success: true, data: 'OK' });
-
-/**
- * The body Bots For Discord sends
- */
-type WebhookBody = {
-	user: string;
-	bot: string;
-	votes: {
-		totalVotes: number;
-		votes24: number;
-		votesMonth: number;
-		hasVoted: string[];
-		hasVoted24: string[];
-	};
-	type: 'vote' | 'test';
-};

@@ -5,6 +5,11 @@
 		"outDir": "./dist",
 		"types": ["node"]
 	},
+	"paths": {
+		"@third_party/*": [
+			"src/lib/third_party/*"
+		]
+	},
 	"include": [
 		"./src/**/*"
 	]

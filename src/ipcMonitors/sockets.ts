@@ -3,7 +3,7 @@ import { IPCMonitor } from '../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	public client: APIClient;
+	public client!: APIClient;
 
 	public run(): any {
 		return [...this.client.ipc.servers.keys()];

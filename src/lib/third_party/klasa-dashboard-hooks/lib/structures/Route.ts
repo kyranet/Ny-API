@@ -18,6 +18,8 @@ export type RouteOptions = {
 
 export class Route extends Piece {
 
+	public client!: DashboardClient;
+
 	/**
 	 * Stored bound run method, so it can be properly disabled and reloaded later
 	 */
@@ -33,10 +35,10 @@ export class Route extends Piece {
 	 */
 	public parsed: ParsedRoute;
 
-	public constructor(client: DashboardClient, store: RouteStore, file: string[], directory: string, options: RouteOptions = {}) {
-		super(client, store, file, directory, options);
-		this.route = client.options.dashboardHooks.apiPrefix + options.route;
-		this.authenticated = options.authenticated;
+	public constructor(store: RouteStore, file: string[], directory: string, options: RouteOptions = {}) {
+		super(store, file, directory, options);
+		this.route = `${this.client.options.dashboardHooks.apiPrefix}${options.route}`;
+		this.authenticated = options.authenticated!;
 		this.parsed = parse(this.route);
 	}
 
