@@ -16,14 +16,14 @@ export function isPrimitive(value: any): boolean {
 }
 
 export function mergeDefault<T = Record<string, any>, S = Record<string, any>>(def: T, given?: S): T & S {
-	if (!given) return deepClone(given as T & S);
+	if (!given) return deepClone(def as T & S);
 	const keys = Object.keys(def);
-	if (!keys.length) return deepClone(given as T & S);
+	if (!keys.length) return deepClone(def as T & S);
 
-	for (const key of Object.keys(def)) {
-		const value = (given as T & S)[key];
-		if (typeof value === 'undefined') (given as T & S)[key] = deepClone((given as T & S)[key]);
-		else if (isObject(value)) mergeDefault(def[key], value);
+	for (const [key, value] of Object.entries(def)) {
+		const currentValue = (given as T & S)[key];
+		if (typeof currentValue === 'undefined') (given as T & S)[key] = deepClone(value);
+		else if (isObject(currentValue)) mergeDefault(value, currentValue);
 	}
 
 	return given as T & S;

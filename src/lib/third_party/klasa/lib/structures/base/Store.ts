@@ -64,7 +64,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 		try {
 			const KlasaPiece = (req => req.default || req)(require(loc));
 			if (!isClass(KlasaPiece)) throw new TypeError('The exported structure is not a class.');
-			piece = this.set(new KlasaPiece(this.client, this, file, directory));
+			piece = this.set(new KlasaPiece(this, file, directory));
 		} catch (error) {
 			this.client.console.wtf(`Failed to load file '${loc}'. Error:\n${error.stack || error}`);
 		}

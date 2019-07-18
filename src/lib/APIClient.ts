@@ -1,7 +1,7 @@
 import { Node } from 'veza';
-import { IPCMonitorStore } from './structures/IPCMonitorStore';
 import { DashboardClient, DashboardClientOptions } from './third_party/klasa-dashboard-hooks';
 import { Colors, ConsoleTexts } from './third_party/klasa/lib/util/Colors';
+import { IPCMonitorStore } from './structures/IPCMonitorStore';
 
 const g = new Colors({ text: ConsoleTexts.green }).format('[IPC   ]');
 const y = new Colors({ text: ConsoleTexts.yellow }).format('[IPC   ]');
