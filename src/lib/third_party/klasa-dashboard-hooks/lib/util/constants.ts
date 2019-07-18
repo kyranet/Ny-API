@@ -18,7 +18,7 @@ export const OPTIONS = {
 	}
 };
 
-export const METHODS_LOWER: Record<keyof typeof HttpMethods, string> = {} as Record<keyof typeof HttpMethods, string>;
+export const METHODS_LOWER: Record<keyof typeof HttpMethods, string> = {} as unknown as Record<keyof typeof HttpMethods, string>;
 for (const method of METHODS) METHODS_LOWER[method] = method.toLowerCase();
 
 export const RESPONSES = {
