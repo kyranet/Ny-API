@@ -41,7 +41,7 @@
   "dependencies": {
     "fs-nextra": "^0.4.5",
     "node-fetch": "^2.6.0",
-    "veza": "^0.6.0"
+    "veza": "^1.0.0"
   },
   "devDependencies": {
     "@types/node": "^12.6.9",
