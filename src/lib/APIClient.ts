@@ -1,4 +1,4 @@
-import { Node } from 'veza';
+import { Server as VezaServer } from 'veza';
 import { DashboardClient, DashboardClientOptions } from './third_party/klasa-dashboard-hooks';
 import { Colors, ConsoleTexts } from './third_party/klasa/lib/util/Colors';
 import { IPCMonitorStore } from './structures/IPCMonitorStore';
@@ -10,12 +10,12 @@ const r = new Colors({ text: ConsoleTexts.red }).format('[IPC   ]');
 export class APIClient extends DashboardClient {
 
 	public ipcMonitors = new IPCMonitorStore(this);
-	public ipc = new Node('ny-api')
-		.on('client.identify', client => { this.console.log(`${g} Client Connected: ${client.name}`); })
-		.on('client.disconnect', client => { this.console.log(`${y} Client Disconnected: ${client.name}`); })
-		.on('client.destroy', client => { this.console.log(`${y} Client Destroyed: ${client.name}`); })
-		.on('server.ready', server => { this.console.log(`${g} Client Ready: Named ${server.name}`); })
-		.on('error', (error, client) => { this.console.error(`${r} Error from ${client.name}`, error); })
+	public ipc = new VezaServer('ny-api')
+		.on('open', () => { this.console.log(`${g} Server Opened`); })
+		.on('close', () => { this.console.error(`${g} Server Closed`); })
+		.on('disconnect', client => { this.console.log(`${y} Disconnected: ${client.name}`); })
+		.on('connect', client => { this.console.log(`${g} Ready ${client.name}`); })
+		.on('error', (error, client) => { this.console.error(`${r} Error from ${(client && client.name) || 'Unknown'}`, error); })
 		.on('message', this.ipcMonitors.run.bind(this.ipcMonitors));
 
 	public constructor(options?: DashboardClientOptions) {
