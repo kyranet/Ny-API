@@ -11,7 +11,7 @@ export default class extends Route {
 		super(store, file, directory, { route: '/commands' });
 	}
 
-	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async get(_: KlasaIncomingMessage, response: ServerResponse) {
 		try {
 			const commands = await this.client.ipcRequest<{ response: string }>(Sockets.Skyra, ['commands', {}]);
 			response.writeHead(200);

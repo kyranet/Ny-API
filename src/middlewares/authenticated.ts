@@ -7,7 +7,7 @@ export default class extends Middleware {
 		super(store, file, directory, { priority: 100 });
 	}
 
-	public async run(request: KlasaIncomingMessage, response: ServerResponse, route: Route): Promise<void> {
+	public async run(request: KlasaIncomingMessage, response: ServerResponse, route: Route) {
 		if (!route || !route.authenticated) return;
 		try {
 			request.auth = decrypt(request.headers.authorization!, this.client.options.clientSecret);
@@ -17,7 +17,7 @@ export default class extends Middleware {
 		}
 	}
 
-	public unauthorized(response: ServerResponse): void {
+	public unauthorized(response: ServerResponse) {
 		response.writeHead(401);
 		response.end(RESPONSES.UNAUTHORIZED);
 	}

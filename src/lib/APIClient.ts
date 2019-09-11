@@ -23,13 +23,13 @@ export class APIClient extends DashboardClient {
 		this.registerStore(this.ipcMonitors);
 	}
 
-	public async ipcRequest<T>(socket: Sockets, body: [string, any?], receptive: boolean = true): Promise<T> {
+	public async ipcRequest<T>(socket: Sockets, body: [string, unknown?], receptive: boolean = true): Promise<T> {
 		const [success, data] = await this.ipc.sendTo(socket, body, { receptive, timeout: 10000 }) as [boolean, T];
 		if (success) return data;
 		throw data;
 	}
 
-	public broadcastRequest<T>(data: [string, any?], receptive: boolean = true): Promise<T[]> {
+	public broadcastRequest<T>(data: [string, unknown?], receptive: boolean = true): Promise<T[]> {
 		return this.ipc.broadcast(data, { receptive, timeout: 10000 });
 	}
 

@@ -13,7 +13,7 @@ export default class extends Route {
 		super(store, file, directory, { route: '/users/:user/settings', enabled: false });
 	}
 
-	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async get(request: KlasaIncomingMessage, response: ServerResponse) {
 		try {
 			const settings = await this.client.ipcRequest(Sockets.Skyra, ['userSettings', request.query.user]);
 			response.writeHead(200);
@@ -24,7 +24,7 @@ export default class extends Route {
 		}
 	}
 
-	public async post(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async post(_: KlasaIncomingMessage, response: ServerResponse) {
 		// if (!request.headers.authorization || !allowedSocialTokens.includes(request.headers.authorization)) {
 		response.writeHead(403);
 		response.end(denied);

@@ -8,7 +8,7 @@ export default class extends Route {
 		super(store, file, directory, { route: '/' });
 	}
 
-	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async get(_: KlasaIncomingMessage, response: ServerResponse) {
 		response.writeHead(200);
 		response.end(reply);
 	}

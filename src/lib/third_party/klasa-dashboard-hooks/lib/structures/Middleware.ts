@@ -24,6 +24,6 @@ export abstract class Middleware extends Piece {
 		this.priority = options.priority!;
 	}
 
-	public abstract async run(request: KlasaIncomingMessage, response: ServerResponse, route: Route): Promise<void>;
+	public abstract run(request: KlasaIncomingMessage, response: ServerResponse, route: Route): unknown;
 
 }

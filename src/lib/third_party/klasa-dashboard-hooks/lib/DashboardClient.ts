@@ -68,7 +68,8 @@ export class DashboardClient extends Client {
 	/**
 	 * The cache where oauth data is temporarily stored
 	 */
-	public dashboardUsers: DataStore<string, DashboardUser, typeof DashboardUser> = new DataStore(this, [], DashboardUser);
+	// @ts-ignore
+	public dashboardUsers = new DataStore<string, DashboardUser, typeof DashboardUser>(this, [], DashboardUser);
 
 	public constructor(options?: DashboardClientOptions) {
 		super(mergeDefault(OPTIONS, options));

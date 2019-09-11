@@ -21,7 +21,7 @@ export class MiddlewareStore extends Store<string, Middleware, ConstructorType<M
 	/**
 	 * Clears the RouteStore
 	 */
-	public clear(): void {
+	public clear() {
 		this.sortedMiddlewares = [];
 		super.clear();
 	}
@@ -30,7 +30,7 @@ export class MiddlewareStore extends Store<string, Middleware, ConstructorType<M
 	 * Adds a Middleware to this MiddlewareStore
 	 * @param piece The Middleware to add to this store
 	 */
-	public set(piece: Middleware): Middleware | null {
+	public set(piece: Middleware) {
 		const middleware = super.set(piece);
 		if (!middleware) return middleware;
 		const index = this.sortedMiddlewares.findIndex(mid => mid.priority >= middleware.priority);
@@ -42,7 +42,7 @@ export class MiddlewareStore extends Store<string, Middleware, ConstructorType<M
 	 * Deletes a Middleware from this MiddlewareStore
 	 * @param name The name of the Middleware or the Middleware
 	 */
-	public delete(name: Middleware | string): boolean {
+	public delete(name: Middleware | string) {
 		const middleware = this.resolve(name);
 		if (!middleware) return false;
 		this.sortedMiddlewares.splice(this.sortedMiddlewares.indexOf(middleware), 1);
@@ -56,7 +56,7 @@ export class MiddlewareStore extends Store<string, Middleware, ConstructorType<M
 	 * @param response The http response
 	 * @param route The route being run
 	 */
-	public async run(request: KlasaIncomingMessage, response: ServerResponse, route: Route): Promise<void> {
+	public async run(request: KlasaIncomingMessage, response: ServerResponse, route: Route) {
 		for (const middleware of this.sortedMiddlewares) {
 			if (response.finished) return;
 			if (middleware.enabled) await middleware.run(request, response, route);

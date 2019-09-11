@@ -1,22 +1,23 @@
 // Copyright (c) 2015-2018 Amish Shah. All rights reserved. Apache License 2.0 license.
-import { Collection } from '../../../collection/lib/Collection';
+import { Collection } from './Collection';
 import { Client } from '../../../klasa';
+import { CollectionConstructor } from '@discordjs/collection';
 
 /**
  * Manages the creation, retrieval and deletion of a specific data model.
  */
-export class DataStore<K extends string, V extends { id: K }, C extends new (...args: any[]) => V> extends Collection<K, V> {
+export class DataStore<K extends string, V extends { id: K }, C extends new (...args: unknown[]) => V> extends Collection<K, V> {
 
 	public client: Client;
 	public holds: C;
-	public constructor(client: Client, iterable: Iterable<any>, holds: C) {
+	public constructor(client: Client, iterable: Iterable<V>, holds: C) {
 		super();
 		this.client = client;
 		this.holds = holds;
 		if (iterable) for (const item of iterable) this.add(item);
 	}
 
-	public add(data: V, cache: boolean = true): V {
+	public add(data: V, cache: boolean = true) {
 		const existing = this.get(data.id);
 		if (existing) return existing;
 
@@ -25,7 +26,7 @@ export class DataStore<K extends string, V extends { id: K }, C extends new (...
 		return entry;
 	}
 
-	public remove(key: K): boolean { return this.delete(key); }
+	public remove(key: K) { return this.delete(key); }
 
 	/**
 	 * Resolves a data entry to a data Object.
@@ -47,8 +48,8 @@ export class DataStore<K extends string, V extends { id: K }, C extends new (...
 		return null;
 	}
 
-	public static get [Symbol.species](): typeof Collection {
-		return Collection;
+	public static get [Symbol.species]() {
+		return Collection as unknown as CollectionConstructor;
 	}
 
 }

@@ -38,7 +38,8 @@ export type KlasaIncomingMessage = {
 	/**
 	 * The params used for this incoming message
 	 */
-	params: Record<string, any>;
+	params: Record<string, unknown>;
+	// TODO: Replacing this to any results on many CE, type all its uses.
 	/**
 	 * The parsed body, only available after the JSON middleware has run
 	 */
@@ -102,7 +103,7 @@ export class Server {
 	 * Starts the server listening to a port
 	 * @param port The port to run the server on
 	 */
-	public listen(port: number): Promise<void> {
+	public listen(port: number) {
 		this.server.on('request', this.handler.bind(this));
 		return new Promise(resolve => {
 			this.server.listen(port, resolve);
@@ -114,7 +115,7 @@ export class Server {
 	 * @param request The request
 	 * @param response The response
 	 */
-	public async handler(request: IncomingMessage, response: ServerResponse): Promise<void> {
+	public async handler(request: IncomingMessage, response: ServerResponse) {
 		const info = parse(request.url!, true);
 		const splitURL = split(info.pathname!);
 		const route = this.client.routes.findRoute(request.method as keyof typeof HttpMethods, splitURL);
@@ -141,7 +142,7 @@ export class Server {
 	 * @param request The request
 	 * @param response The response
 	 */
-	public onError(error: ErrorLike, _: KlasaIncomingMessage, response: ServerResponse): void {
+	public onError(error: ErrorLike, _: KlasaIncomingMessage, response: ServerResponse) {
 		response.statusCode = error.code || error.status || error.statusCode || 500;
 		response.end(error.message || STATUS_CODES[response.statusCode]);
 	}

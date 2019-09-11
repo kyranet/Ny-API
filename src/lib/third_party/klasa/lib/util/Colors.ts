@@ -99,7 +99,7 @@ export class Colors {
 	 * Format a string
 	 * @param input The string to format
 	 */
-	public format(input: string): string {
+	public format(input: string) {
 		return this.opening + input + this.closing;
 	}
 
@@ -108,7 +108,7 @@ export class Colors {
 	 * @param styles The style or styles to apply
 	 * @param data The data
 	 */
-	private static style(styles?: ConsoleTexts | ConsoleTexts[], { opening = [], closing = [] }: ColorsFormatData = {}): ColorsFormatData {
+	private static style(styles?: ConsoleTexts | ConsoleTexts[], { opening = [], closing = [] }: ColorsFormatData = {}) {
 		if (styles) {
 			if (!Array.isArray(styles)) styles = [styles];
 			for (const style of styles) {
@@ -116,7 +116,7 @@ export class Colors {
 				closing.push(ConsoleClose[ConsoleStyles[style]]);
 			}
 		}
-		return { opening, closing };
+		return { opening, closing } as ColorsFormatData;
 	}
 
 	/**
@@ -125,12 +125,12 @@ export class Colors {
 	 * @param background The background to apply
 	 * @param data The data
 	 */
-	private static background(background?: ConsoleBackgrounds, { opening = [], closing = [] }: ColorsFormatData = {}): ColorsFormatData {
+	private static background(background?: ConsoleBackgrounds, { opening = [], closing = [] }: ColorsFormatData = {}) {
 		if (background) {
 			opening.push(ConsoleBackgrounds[ConsoleBackgrounds[background]]);
 			closing.push(ConsoleClose.background);
 		}
-		return { opening, closing };
+		return { opening, closing } as ColorsFormatData;
 	}
 
 	/**
@@ -139,12 +139,12 @@ export class Colors {
 	 * @param text The text format to apply
 	 * @param data The data
 	 */
-	private static text(text?: ConsoleTexts, { opening = [], closing = [] }: ColorsFormatData = {}): ColorsFormatData {
+	private static text(text?: ConsoleTexts, { opening = [], closing = [] }: ColorsFormatData = {}) {
 		if (text) {
 			opening.push(ConsoleTexts[ConsoleTexts[text]]);
 			closing.push(ConsoleClose.text);
 		}
-		return { opening, closing };
+		return { opening, closing } as ColorsFormatData;
 	}
 
 }

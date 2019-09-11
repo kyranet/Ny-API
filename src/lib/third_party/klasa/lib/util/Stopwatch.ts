@@ -29,14 +29,14 @@ export class Stopwatch {
 	/**
 	 * The duration of this stopwatch since start or start to end if this stopwatch has stopped.
 	 */
-	public get duration(): number {
+	public get duration() {
 		return this._end ? this._end - this._start : performance.now() - this._start;
 	}
 
 	/**
 	 * If the stopwatch is running or not
 	 */
-	public get running(): boolean {
+	public get running() {
 		return Boolean(!this._end);
 	}
 
@@ -44,7 +44,7 @@ export class Stopwatch {
 	 * Restarts the Stopwatch (Returns a running state)
 	 * @chainable
 	 */
-	public restart(): this {
+	public restart() {
 		this._start = performance.now();
 		this._end = null;
 		return this;
@@ -54,7 +54,7 @@ export class Stopwatch {
 	 * Resets the Stopwatch to 0 duration (Returns a stopped state)
 	 * @chainable
 	 */
-	public reset(): this {
+	public reset() {
 		this._start = performance.now();
 		this._end = this._start;
 		return this;
@@ -64,7 +64,7 @@ export class Stopwatch {
 	 * Starts the Stopwatch
 	 * @chainable
 	 */
-	public start(): this {
+	public start() {
 		if (!this.running) {
 			this._start = performance.now() - this.duration;
 			this._end = null;
@@ -76,7 +76,7 @@ export class Stopwatch {
 	 * Stops the Stopwatch, freezing the duration
 	 * @chainable
 	 */
-	public stop(): this {
+	public stop() {
 		if (this.running) this._end = performance.now();
 		return this;
 	}
@@ -84,7 +84,7 @@ export class Stopwatch {
 	/**
 	 * Defines toString behavior
 	 */
-	public toString(): string {
+	public toString() {
 		const time = this.duration;
 		if (time >= 1000) return `${(time / 1000).toFixed(this.digits)}s`;
 		if (time >= 1) return `${time.toFixed(this.digits)}ms`;

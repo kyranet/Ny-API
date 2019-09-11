@@ -1,7 +1,7 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
-import { Collection } from '../../../collection/lib/Collection';
 import { DashboardClient } from '../DashboardClient';
 import { DashboardUser } from './DashboardUser';
+import { Collection } from '../../../discord.js';
 
 /**
  * The dashboard guild data
@@ -37,7 +37,7 @@ export class DashboardGuild {
 	/**
 	 * The OAuth Users this DashboardGuild is for
 	 */
-	public users: Collection<string, DashboardUser> = new Collection();
+	public users = new Collection<string, DashboardUser>();
 
 	public constructor(client: DashboardClient, data: DashboardGuildData) {
 		this.client = client;
@@ -56,12 +56,12 @@ export class DashboardGuild {
 	/**
 	 * The toJSON behavior of this structure
 	 */
-	public toJSON(): DashboardGuildData {
+	public toJSON() {
 		return {
 			icon: this.icon,
 			id: this.id,
 			name: this.name
-		};
+		} as DashboardGuildData;
 	}
 
 }

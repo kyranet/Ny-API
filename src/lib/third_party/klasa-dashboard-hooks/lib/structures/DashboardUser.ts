@@ -1,7 +1,7 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
-import { Collection } from '../../../collection/lib/Collection';
 import { DashboardClient } from '../DashboardClient';
 import { DashboardGuild, DashboardGuildData } from './DashboardGuild';
+import { Collection } from '../../../discord.js';
 
 /**
  * The dashboard user data
@@ -36,7 +36,7 @@ export class DashboardUser {
 	/**
 	 * The collection of OAuth Guilds this OAuth User is in
 	 */
-	public guilds: Collection<string, DashboardGuild> = new Collection();
+	public guilds = new Collection<string, DashboardGuild>();
 
 	/**
 	 * The id of the OAuth User
@@ -116,13 +116,13 @@ export class DashboardUser {
 		this.guilds = new Collection();
 	}
 
-	public avatarURL(): string {
+	public avatarURL() {
 		return this.avatar
 			? `https://cdn.discordapp.com/avatars/${this.id}/${this.avatar}.png`
 			: `https://cdn.discordapp.com/embed/avatars/${this.discriminator % 5}.png`;
 	}
 
-	public toJSON(): DashboardUserData {
+	public toJSON() {
 		return {
 			avatar: this.avatar,
 			discriminator: this.discriminator,
@@ -131,7 +131,7 @@ export class DashboardUser {
 			locale: this.locale,
 			mfaEnabled: this.mfaEnabled,
 			username: this.username
-		};
+		} as DashboardUserData;
 	}
 
 }

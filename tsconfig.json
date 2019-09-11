@@ -1,8 +1,9 @@
 {
-	"extends": "eslint-config-bamboo",
+	"extends": "eslint-config-bamboo/tsconfig.json",
 	"compilerOptions": {
 		"noImplicitAny": false,
 		"outDir": "./dist",
+		"downlevelIteration": true,
 		"types": ["node"]
 	},
 	"paths": {

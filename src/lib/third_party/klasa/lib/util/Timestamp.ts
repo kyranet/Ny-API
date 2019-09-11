@@ -43,7 +43,7 @@ export class Timestamp {
 	 * Display the current date with the current pattern.
 	 * @param time The time to display
 	 */
-	public display(time: Date | number | string = new Date()): string {
+	public display(time: Date | number | string = new Date()) {
 		return Timestamp._display(this._template, time);
 	}
 
@@ -51,7 +51,7 @@ export class Timestamp {
 	 * Display the current date utc with the current pattern.
 	 * @param data The time to display in utc
 	 */
-	public displayUTC(time: Date | number | string = new Date()): string {
+	public displayUTC(time: Date | number | string = new Date()) {
 		return Timestamp._display(this._template, Timestamp.utc(time));
 	}
 
@@ -60,7 +60,7 @@ export class Timestamp {
 	 * @param pattern The new pattern for this instance
 	 * @chainable
 	 */
-	public edit(pattern: string): this {
+	public edit(pattern: string) {
 		this.pattern = pattern;
 		this._template = Timestamp._patch(pattern);
 		return this;
@@ -69,7 +69,7 @@ export class Timestamp {
 	/**
 	 * Defines the toString behavior of export const
 	 */
-	public toString(): string {
+	public toString() {
 		return this.display();
 	}
 
@@ -78,7 +78,7 @@ export class Timestamp {
 	 * @param pattern The pattern to parse
 	 * @param time The time to display
 	 */
-	public static displayArbitrary(pattern: string, time: Date | number | string = new Date()): string {
+	public static displayArbitrary(pattern: string, time: Date | number | string = new Date()) {
 		return Timestamp._display(Timestamp._patch(pattern), time);
 	}
 
@@ -86,7 +86,7 @@ export class Timestamp {
 	 * Creates a UTC Date object to work with.
 	 * @param time The date to convert to utc
 	 */
-	public static utc(time: Date | number | string = new Date()): Date {
+	public static utc(time: Date | number | string = new Date()) {
 		time = Timestamp._resolveDate(time);
 		return new Date(time.valueOf() + timezoneOffset);
 	}
@@ -96,7 +96,7 @@ export class Timestamp {
 	 * @param template The pattern to parse
 	 * @param time The time to display
 	 */
-	private static _display(template: TimestampObject[], time: Date | number | string): string {
+	private static _display(template: TimestampObject[], time: Date | number | string) {
 		let output = '';
 		const parsedTime = Timestamp._resolveDate(time);
 		// eslint-disable-next-line @typescript-eslint/no-use-before-define
@@ -108,7 +108,7 @@ export class Timestamp {
 	 * Parses the pattern.
 	 * @param pattern The pattern to parse
 	 */
-	private static _patch(pattern: string): TimestampObject[] {
+	private static _patch(pattern: string) {
 		const template: TimestampObject[] = [];
 		for (let i = 0; i < pattern.length; i++) {
 			let current = '';
@@ -135,7 +135,7 @@ export class Timestamp {
 	 * Resolves a date.
 	 * @param time The time to parse
 	 */
-	private static _resolveDate(time: Date | number | string): Date {
+	private static _resolveDate(time: Date | number | string) {
 		return time instanceof Date ? time : new Date(time);
 	}
 

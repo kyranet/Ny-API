@@ -1,19 +1,18 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { ensureDir, scan } from 'fs-nextra';
 import { extname, join, relative, sep } from 'path';
-import { Collection } from '../../../../collection/lib/Collection';
 import { ConstructorType } from '../../../../klasa-dashboard-hooks/lib/util/Util';
 import { Client } from '../../Client';
 import { isClass } from '../../util/util';
 import { Piece } from './Piece';
+import { Collection } from '../../../../discord.js';
 
-// @ts-ignore
 export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Collection<K, V> {
 
 	/**
 	 * The directory of local pieces relative to where you run Klasa from.
 	 */
-	public get userDirectory(): string {
+	public get userDirectory() {
 		return join(this.client.userBaseDirectory, this.name);
 	}
 
@@ -47,7 +46,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	/**
 	 * Initializes all pieces in this store.
 	 */
-	public init(): Promise<Array<any>> {
+	public init() {
 		// @ts-ignore
 		return Promise.all(this.map(piece => piece.enabled ? piece.init() : piece.unload()));
 	}
@@ -58,7 +57,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	 * @param directory The directory the file is located in
 	 * @param file A string or array of strings showing where the file is located.
 	 */
-	public load(directory: string, file: string[]): Piece {
+	public load(directory: string, file: string[]) {
 		const loc = join(directory, ...file);
 		let piece: V | null = null;
 		try {
@@ -78,7 +77,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	/**
 	 * Loads all of our Pieces from both the user and core directories.
 	 */
-	public async loadAll(): Promise<number> {
+	public async loadAll() {
 		this.clear();
 		for (const directory of this.coreDirectories) await Store.walk(this, directory);
 		await Store.walk(this);
@@ -90,7 +89,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	 * @param piece The piece we are setting up
 	 */
 	// @ts-ignore
-	public set(piece: V): V | null {
+	public set(piece: V) {
 		if (!(piece instanceof this.holds)) {
 			this.client.console.error(`Only ${this} may be stored in this Store.`);
 			return null;
@@ -107,7 +106,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	 * @param name A command object or a string representing a command or alias name
 	 */
 	// @ts-ignore
-	public delete(name: V | K): boolean {
+	public delete(name: V | K) {
 		const piece = this.resolve(name);
 		if (!piece) return false;
 		super.delete(piece.name as unknown as K);
@@ -117,7 +116,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	/**
 	 * Resolve a string or piece into a piece object.
 	 */
-	public resolve(name: V | K): V {
+	public resolve(name: V | K) {
 		if (name instanceof this.holds) return name as V;
 		return this.get(name as K)!;
 	}
@@ -125,14 +124,14 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	/**
 	 * Defines toString behavior for stores
 	 */
-	public toString(): string {
+	public toString() {
 		return this.name;
 	}
 
 	/**
 	 * Registers a core directory to check for pieces
 	 */
-	protected registerCoreDirectory(directory: string): this {
+	protected registerCoreDirectory(directory: string) {
 		this.coreDirectories.add(directory + this.name);
 		return this;
 	}
@@ -142,7 +141,7 @@ export class Store<K, V extends Piece, C extends ConstructorType<V>> extends Col
 	 * @param store The store we're loading into
 	 * @param directory The directory to walk in
 	 */
-	public static async walk<K, V extends Piece, C extends new(...args: any[]) => V>(store: Store<K, V, C>, directory: string = store.userDirectory): Promise<Array<Piece>> {
+	public static async walk<K, V extends Piece, C extends new(...args: unknown[]) => V>(store: Store<K, V, C>, directory: string = store.userDirectory) {
 		try {
 			const files = await scan(directory, { filter: (stats, path) => stats.isFile() && extname(path) === '.js' });
 			return Promise.all([...files.keys()].map(file => store.load(directory, relative(directory, file).split(sep))));

@@ -11,7 +11,7 @@ export default class extends Route {
 		super(store, file, directory, { route: '/users/:user', enabled: false });
 	}
 
-	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async get(request: KlasaIncomingMessage, response: ServerResponse) {
 		try {
 			const user = await this.client.ipcRequest(Sockets.Skyra, ['user', request.query.user]);
 			response.writeHead(200);

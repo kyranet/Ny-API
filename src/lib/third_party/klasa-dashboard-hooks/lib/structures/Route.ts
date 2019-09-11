@@ -46,7 +46,7 @@ export class Route extends Piece {
 	 * If this route matches a provided url
 	 * @param split the url to check
 	 */
-	public matches(split: string[]): boolean {
+	public matches(split: string[]) {
 		if (split.length !== this.parsed.length) return false;
 		for (let i = 0; i < this.parsed.length; i++) if (this.parsed[i].type === 0 && this.parsed[i].val !== split[i]) return false;
 		return true;
@@ -56,8 +56,8 @@ export class Route extends Piece {
 	 * Extracts the params from a provided url
 	 * @param split the url
 	 */
-	public execute(split: string[]): Record<string, any> {
-		const params = {};
+	public execute(split: string[]) {
+		const params = {} as Record<string, unknown>;
 		for (let i = 0; i < this.parsed.length; i++) if (this.parsed[i].type === 1) params[this.parsed[i].val] = split[i];
 		return params;
 	}

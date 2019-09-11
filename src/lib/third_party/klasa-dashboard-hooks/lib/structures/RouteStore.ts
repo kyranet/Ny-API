@@ -237,6 +237,7 @@ export class RouteStore extends Store<string, Route, ConstructorType<Route>> {
 	public registry: Partial<RouteStoreRegistry> = {};
 
 	public constructor(client: DashboardClient) {
+		// @ts-ignore
 		super(client, 'routes', Route);
 		for (const method of METHODS) this.registry[method] = new Map();
 	}
@@ -246,7 +247,7 @@ export class RouteStore extends Store<string, Route, ConstructorType<Route>> {
 	 * @param method The http method
 	 * @param splitURL the url to find
 	 */
-	public findRoute(method: keyof typeof HttpMethods, splitURL: string[]): Route | undefined {
+	public findRoute(method: keyof typeof HttpMethods, splitURL: string[]) {
 		for (const route of this.registry[method]!.values()) if (route.matches(splitURL)) return route;
 		return undefined;
 	}
@@ -254,7 +255,7 @@ export class RouteStore extends Store<string, Route, ConstructorType<Route>> {
 	/**
 	 * Clears the RouteStore
 	 */
-	public clear(): void {
+	public clear() {
 		for (const method of METHODS) this.registry[method].clear();
 		super.clear();
 	}
@@ -263,7 +264,7 @@ export class RouteStore extends Store<string, Route, ConstructorType<Route>> {
 	 * Adds a Route to this RouteStore
 	 * @param piece The route to add to this store
 	 */
-	public set(piece: Route): Route | null {
+	public set(piece: Route) {
 		const route = super.set(piece);
 		if (!route) return route;
 		for (const method of METHODS) if (METHODS_LOWER[method] in route) this.registry[method].set(route.name, route);
@@ -274,7 +275,7 @@ export class RouteStore extends Store<string, Route, ConstructorType<Route>> {
 	 * Deletes a Route from this RouteStore
 	 * @param name The name of the Route or the Route
 	 */
-	public delete(name: Route | string): boolean {
+	public delete(name: Route | string) {
 		const route = this.resolve(name);
 		if (!route) return false;
 		for (const method of METHODS) this.registry[method].delete(route.name);

@@ -11,7 +11,7 @@ export default class extends Route {
 		super(store, file, directory, { route: '/application', authenticated: true });
 	}
 
-	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async get(_: KlasaIncomingMessage, response: ServerResponse) {
 		try {
 			const data = await this.client.ipcRequest(Sockets.Skyra, ['application']);
 			response.end(JSON.stringify({ success: true, data }));

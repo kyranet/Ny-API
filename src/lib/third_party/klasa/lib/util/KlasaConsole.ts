@@ -58,7 +58,7 @@ export class KlasaConsole extends Console {
 	 * Calls a log write with everything to the console/writable stream.
 	 * @param data The data we want to print
 	 */
-	public log(...data: any[]): void {
+	public log(...data: unknown[]) {
 		this.write(data, 'log');
 	}
 
@@ -66,7 +66,7 @@ export class KlasaConsole extends Console {
 	 * Calls a warn write with everything to the console/writable stream.
 	 * @param data The data we want to print
 	 */
-	public warn(...data: any[]): void {
+	public warn(...data: unknown[]) {
 		this.write(data, 'warn');
 	}
 
@@ -74,7 +74,7 @@ export class KlasaConsole extends Console {
 	 * Calls an error write with everything to the console/writable stream.
 	 * @param data The data we want to print
 	 */
-	public error(...data: any[]): void {
+	public error(...data: unknown[]) {
 		this.write(data, 'error');
 	}
 
@@ -82,7 +82,7 @@ export class KlasaConsole extends Console {
 	 * Calls a debug write with everything to the console/writable stream.
 	 * @param data The data we want to print
 	 */
-	public debug(...data: any[]): void {
+	public debug(...data: unknown[]) {
 		this.write(data, 'debug');
 	}
 
@@ -90,7 +90,7 @@ export class KlasaConsole extends Console {
 	 * Calls a verbose write with everything to the console/writable stream.
 	 * @param data The data we want to print
 	 */
-	public verbose(...data: any[]): void {
+	public verbose(...data: unknown[]) {
 		this.write(data, 'verbose');
 	}
 
@@ -98,14 +98,14 @@ export class KlasaConsole extends Console {
 	 * Calls a wtf (what a terrible failure) write with everything to the console/writable stream.
 	 * @param data The data we want to print
 	 */
-	public wtf(...data: any[]): void {
+	public wtf(...data: unknown[]) {
 		this.write(data, 'wtf');
 	}
 
 	/**
 	 * The timestamp to use
 	 */
-	private get timestamp(): string {
+	private get timestamp() {
 		return this.utc ? this.template!.displayUTC() : this.template!.display();
 	}
 
@@ -114,7 +114,7 @@ export class KlasaConsole extends Console {
 	 * @param data The data we want to print
 	 * @param type The type of log, particularly useful for coloring
 	 */
-	private write(data: any[], type: KlasaConsoleTypes = 'log'): void {
+	private write(data: unknown[], type: KlasaConsoleTypes = 'log') {
 		const flattened = data.map(KlasaConsole._flatten).join('\n');
 		const { time, message } = this.colors[type];
 		const timestamp = this.template ? time.format(`[${this.timestamp}]`) : '';
@@ -125,7 +125,7 @@ export class KlasaConsole extends Console {
 	 * Flattens our data into a readable string.
 	 * @param data Some data to flatten
 	 */
-	private static _flatten(data: any): string {
+	private static _flatten(data: any) {
 		if (typeof data === 'undefined' || typeof data === 'number' || data === null) return String(data);
 		if (typeof data === 'string') return data;
 		if (typeof data === 'object') {

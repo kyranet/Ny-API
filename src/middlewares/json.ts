@@ -1,4 +1,4 @@
-import { createGunzip, createInflate, Gunzip, Inflate } from 'zlib';
+import { createGunzip, createInflate } from 'zlib';
 import { KlasaIncomingMessage, Middleware, MiddlewareStore } from '../lib/third_party/klasa-dashboard-hooks';
 
 export default class extends Middleware {
@@ -7,7 +7,7 @@ export default class extends Middleware {
 		super(store, file, directory, { priority: 20 });
 	}
 
-	public async run(request: KlasaIncomingMessage): Promise<void> {
+	public async run(request: KlasaIncomingMessage) {
 		if (request.method !== 'POST') return;
 
 		const stream = this.contentStream(request);
@@ -19,7 +19,7 @@ export default class extends Middleware {
 		request.body = data;
 	}
 
-	public contentStream(request: KlasaIncomingMessage): Inflate | Gunzip | KlasaIncomingMessage {
+	public contentStream(request: KlasaIncomingMessage) {
 		const length = request.headers['content-length'];
 		let stream;
 		switch ((request.headers['content-encoding'] || 'identity').toLowerCase()) {

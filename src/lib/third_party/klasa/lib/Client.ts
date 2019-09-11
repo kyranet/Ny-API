@@ -1,12 +1,12 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
 import { EventEmitter } from 'events';
 import { dirname } from 'path';
-import { Collection } from '../../collection/lib/Collection';
 import { ConstructorType } from '../../klasa-dashboard-hooks/lib/util/Util';
 import { Piece, PieceOptions } from './structures/base/Piece';
 import { Store } from './structures/base/Store';
 import { KlasaConsole, KlasaConsoleOptions } from './util/KlasaConsole';
 import { Stopwatch } from './util/Stopwatch';
+import { Collection } from '../../discord.js';
 
 /**
  * The client options
@@ -23,7 +23,7 @@ export class Client extends EventEmitter {
 	public options: Required<ClientOptions>;
 	public userBaseDirectory = dirname(require.main!.filename);
 	public console: KlasaConsole;
-	public pieceStores: Collection<string, Store<string, Piece, new (...args: any[]) => Piece>> = new Collection();
+	public pieceStores = new Collection<string, Store<string, Piece, new (...args: unknown[]) => Piece>>();
 
 	public constructor(options: ClientOptions = {}) {
 		super();
@@ -36,7 +36,7 @@ export class Client extends EventEmitter {
 	 * @param store The store that pieces will be stored in
 	 * @chainable
 	 */
-	public registerStore<V extends Piece, C extends ConstructorType<V>>(store: Store<string, V, C>): this {
+	public registerStore<V extends Piece, C extends ConstructorType<V>>(store: Store<string, V, C>) {
 		this.pieceStores.set(store.name, store);
 		return this;
 	}
@@ -46,12 +46,12 @@ export class Client extends EventEmitter {
 	 * @param storeName The store that pieces will be stored in
 	 * @chainable
 	 */
-	public unregisterStore(storeName: string): this {
+	public unregisterStore(storeName: string) {
 		this.pieceStores.delete(storeName);
 		return this;
 	}
 
-	public async start(): Promise<void> {
+	public async start() {
 		const timer = new Stopwatch();
 		try {
 			const loaded = await Promise.all(this.pieceStores.map(async store => `Loaded ${await store.loadAll()} ${store.name}.`));

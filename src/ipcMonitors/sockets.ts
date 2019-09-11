@@ -5,7 +5,7 @@ export default class extends IPCMonitor {
 
 	public client!: APIClient;
 
-	public run(): any {
+	public run() {
 		return [...this.client.ipc.sockets.keys()];
 	}
 

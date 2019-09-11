@@ -52,21 +52,21 @@ export class Piece {
 	/**
 	 * The type of Klasa piece this is
 	 */
-	public get type(): string {
+	public get type() {
 		return this.store.name.slice(0, -1);
 	}
 
 	/**
 	 * The absolute path to this piece
 	 */
-	public get path(): string {
+	public get path() {
 		return join(this.directory, ...this.file);
 	}
 
 	/**
 	 * Reloads this piece
 	 */
-	public async reload(): Promise<Piece> {
+	public async reload() {
 		const piece = this.store.load(this.directory, this.file);
 		await piece.init();
 		this.client.emit('pieceReloaded', piece);
@@ -76,7 +76,7 @@ export class Piece {
 	/**
 	 * Unloads this piece
 	 */
-	public unload(): boolean {
+	public unload() {
 		this.client.emit('pieceUnloaded', this);
 		return this.store.delete(this);
 	}
@@ -85,7 +85,7 @@ export class Piece {
 	 * Disables this piece
 	 * @chainable
 	 */
-	public disable(): this {
+	public disable() {
 		this.client.emit('pieceDisabled', this);
 		this.enabled = false;
 		return this;
@@ -95,7 +95,7 @@ export class Piece {
 	 * Enables this piece
 	 * @chainable
 	 */
-	public enable(): this {
+	public enable() {
 		this.client.emit('pieceEnabled', this);
 		this.enabled = true;
 		return this;
@@ -104,21 +104,21 @@ export class Piece {
 	/**
 	 * The init method to be optionally overwritten in actual commands
 	 */
-	public async init(): Promise<void> {
+	public async init() {
 		// noop
 	}
 
 	/**
 	 * Defines toString behavior for pieces
 	 */
-	public toString(): string {
+	public toString() {
 		return this.name;
 	}
 
 	/**
 	 * Defines the JSON.stringify behavior of this task.
 	 */
-	public toJSON(): PieceToJSON<Required<PieceOptions>> {
+	public toJSON() {
 		return {
 			directory: this.directory,
 			enabled: this.enabled,
@@ -126,7 +126,7 @@ export class Piece {
 			name: this.name,
 			path: this.path,
 			type: this.type
-		};
+		} as PieceToJSON<Required<PieceOptions>>;
 	}
 
 }

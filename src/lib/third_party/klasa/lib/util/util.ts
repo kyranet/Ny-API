@@ -1,21 +1,23 @@
 // Copyright (c) 2017-2018 dirigeants. All rights reserved. MIT license.
-export function isClass(input: any): boolean {
+export function isClass(input: unknown) {
 	return typeof input === 'function'
 		&& typeof input.prototype === 'object'
 		&& input.toString().substring(0, 5) === 'class';
 }
 
-export function isObject(input: any): boolean {
-	return input && input.constructor === Object;
+export function isObject(input: unknown) {
+	return typeof input === 'object'
+		&& input !== null
+		&& input.constructor === Object;
 }
 
 export const PRIMITIVE_TYPES = ['string', 'bigint', 'number', 'boolean'];
 
-export function isPrimitive(value: any): boolean {
+export function isPrimitive(value: unknown) {
 	return PRIMITIVE_TYPES.includes(typeof value);
 }
 
-export function mergeDefault<T = Record<string, any>, S = Record<string, any>>(def: T, given?: S): T & S {
+export function mergeDefault<T = Record<string, unknown>, S = Record<string, unknown>>(def: T, given?: S) {
 	if (!given) return deepClone(def as T & S);
 	const keys = Object.keys(def);
 	if (!keys.length) return deepClone(def as T & S);

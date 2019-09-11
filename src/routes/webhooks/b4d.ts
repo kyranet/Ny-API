@@ -15,7 +15,7 @@ export default class extends Route {
 		super(store, file, directory, { route: '/webhooks/b4d' });
 	}
 
-	public async post(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async post(request: KlasaIncomingMessage, response: ServerResponse) {
 		if (request.headers.authorization === B4D_TOKEN) {
 			const { body } = request;
 			if (body.type === 'vote') {

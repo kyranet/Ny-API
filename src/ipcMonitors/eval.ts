@@ -3,7 +3,7 @@ import { IPCMonitor } from '../lib/structures/IPCMonitor';
 
 export default class extends IPCMonitor {
 
-	public async run(payload: string): Promise<any> {
+	public async run(payload: string) {
 		if (!payload) throw 'MISSING_PAYLOAD';
 		try {
 			// eslint-disable-next-line no-eval

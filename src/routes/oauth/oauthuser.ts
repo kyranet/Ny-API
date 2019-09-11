@@ -1,7 +1,7 @@
 import { ServerResponse } from 'http';
 import fetch from 'node-fetch';
 import { APIClient } from '../../lib/APIClient';
-import { DashboardUser, encrypt, KlasaIncomingMessage, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
+import { encrypt, KlasaIncomingMessage, Route, RouteStore } from '../../lib/third_party/klasa-dashboard-hooks';
 
 export default class extends Route {
 
@@ -11,7 +11,7 @@ export default class extends Route {
 		super(store, file, directory, { route: '/oauth/user', authenticated: true });
 	}
 
-	public async api(token: string): Promise<DashboardUser> {
+	public async api(token: string) {
 		token = `Bearer ${token}`;
 		const user = await fetch('https://discordapp.com/api/users/@me', { headers: { Authorization: token } })
 			.then(result => result.json());
@@ -20,7 +20,7 @@ export default class extends Route {
 		return this.client.dashboardUsers.add(user);
 	}
 
-	public async get(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async get(request: KlasaIncomingMessage, response: ServerResponse) {
 		let dashboardUser = this.client.dashboardUsers.get(request.auth!.scope[0]);
 
 		if (!dashboardUser) {

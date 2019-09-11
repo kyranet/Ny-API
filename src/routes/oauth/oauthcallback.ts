@@ -9,11 +9,11 @@ export default class extends Route {
 		super(store, file, directory, { route: '/oauth/callback', authenticated: true });
 	}
 
-	public get oauthUser(): Route {
+	public get oauthUser() {
 		return this.store.get('oauthUser') as Route;
 	}
 
-	public async post(request: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async post(request: KlasaIncomingMessage, response: ServerResponse) {
 		if (!request.body.code) {
 			this.noCode(response);
 			return;
@@ -50,12 +50,12 @@ export default class extends Route {
 		}));
 	}
 
-	public notReady(response: ServerResponse): void {
+	public notReady(response: ServerResponse) {
 		response.writeHead(500);
 		response.end(RESPONSES.NOT_READY);
 	}
 
-	public noCode(response: ServerResponse): void {
+	public noCode(response: ServerResponse) {
 		response.writeHead(400);
 		response.end(RESPONSES.NO_CODE);
 	}

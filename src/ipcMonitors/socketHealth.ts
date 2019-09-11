@@ -5,7 +5,7 @@ export default class extends IPCMonitor {
 
 	public client!: APIClient;
 
-	public run(payload: Sockets): any {
+	public run(payload: Sockets) {
 		if (!payload) throw 'MISSING_PAYLOAD';
 		return this.client.ipcRequest(payload, ['health']);
 	}

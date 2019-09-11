@@ -11,7 +11,7 @@ export default class extends Route {
 		super(store, file, directory, { route: '/join' });
 	}
 
-	public async get(_: KlasaIncomingMessage, response: ServerResponse): Promise<void> {
+	public async get(_: KlasaIncomingMessage, response: ServerResponse) {
 		try {
 			const link = await this.client.ipcRequest<{ response: string }>(Sockets.Skyra, ['join']);
 			response.writeHead(200);
