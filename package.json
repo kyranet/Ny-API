@@ -39,7 +39,7 @@
   },
   "homepage": "https://github.com/kyranet/Ny-API#readme",
   "dependencies": {
-    "@discordjs/collection": "^0.1.1",
+    "@discordjs/collection": "^0.1.2",
     "fs-nextra": "^0.4.5",
     "node-fetch": "^2.6.0",
     "veza": "^1.1.0"

@@ -18,10 +18,10 @@
     esutils "^2.0.2"
     js-tokens "^4.0.0"
 
-"@discordjs/collection@^0.1.1":
-  version "0.1.1"
-  resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.1.tgz#372b126186c3bdf77f32bb284a72d7a75b394323"
-  integrity sha512-T5AGaxlR2vszMM/a0cKoHFjSCNwE/sON4fW0ZGuLRwbJVdkezsSzy/TYU/IOQqOLTyzEeIh0EjGikrwH5+dUHA==
+"@discordjs/collection@^0.1.2":
+  version "0.1.2"
+  resolved "https://registry.yarnpkg.com/@discordjs/collection/-/collection-0.1.2.tgz#f3d88dfc0ca62bb4cbf24f80202cdfdfccf9fa4d"
+  integrity sha512-N4lTTbLYb4aiOVqi2xQgkNrzWouCkT1QisAVg/gi1h4rZdw8d5JEuIdqISkG+Zl8BTmyxEb8zXmfsORLGoeDig==
 
 "@types/eslint-visitor-keys@^1.0.0":
   version "1.0.0"
