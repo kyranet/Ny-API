@@ -3,6 +3,8 @@
 [![Total alerts](https://img.shields.io/lgtm/alerts/g/kyranet/Ny-API.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kyranet/Ny-API/alerts/)
 [![Language grade: JavaScript](https://img.shields.io/lgtm/grade/javascript/g/kyranet/Ny-API.svg?logo=lgtm&logoWidth=18)](https://lgtm.com/projects/g/kyranet/Ny-API/context:javascript)
 
+> **Note**: This microservice has been deprecated, no further support will be given.
+
 Microservice for Ny-API, provides backend functionality for Skyra's dashboard.
 
 ## Development Requirements
